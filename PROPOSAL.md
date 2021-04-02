@@ -17,14 +17,14 @@ During the first week of the project, I will work to create the brick class in w
 position, number of hits required to destroy it, and any other property I think is necessary to store as part of
 the class for the brick. I will work on drawing each of the bricks and randomizing their x-position, since they
 will all be in the same row and will have the same y-position with every set of bricks added to the screen in one
-call of the draw method. I plan to store all the bricks in a vector and every time the screen updates, I will loop through the vector and check if 
-any of the bricks have reached the bottom of the container. During the second week of the project, I will create
-properties of the particle and write the method to execute the collisions of the particles with the bricks. This
-will require updating properties of the brick as well, ensuring that the number of hits required to break each
-brick also decreases and this change is properly displayed on the screen. During the final week of the project,
-I will work on getting the sliding platform to move and properly execute its collisions with the ball as well.
-Additionally, I will also try to implement some sort of sound effects every time the ball collides with the 
-sliding platform and the brick to make the game a little more interesting for the player.
+call of the draw method. I plan to store all the bricks in a vector and every time the screen updates, I will loop 
+through the vector and check if any of the bricks have reached the bottom of the container. During the second week 
+of the project, I will create properties of the particle and write the method to execute the collisions of the 
+particles with the bricks. This will require updating properties of the brick as well, ensuring that the number 
+of hits required to break each brick also decreases and this change is properly displayed on the screen. During 
+the final week of the project, I will work on getting the sliding platform to move and properly execute its collisions 
+with the ball as well. Additionally, I will also try to implement some sort of sound effects every time the ball collides 
+with the sliding platform and the brick to make the game a little more interesting for the player.
 
 If there is extra time after I complete all the implementations mentioned above, I will work to implement
 the addition of another ball in the game if the game continues for a certain amount of time to make it more
