@@ -1,1 +1,1 @@
-Put your final project proposal here.
+Swipe brick breaker w/ atari breakout style
