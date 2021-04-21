@@ -35,4 +35,4 @@ velocities increase if the game continues for a certain amount of time to add an
 the player and help the game end quicker. I have chosen to do this game because I really like
 the swipe brick breaker game and I wanted to put a new twist to it with the continuous movement of the ball and
 randomization of brick size in a row. I hope to be able to utilize all the skills I have learned in this class
-to make something fun for myself and others to play!
+to make something f****un for myself and others to play!
