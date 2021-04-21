@@ -1,4 +1,4 @@
-#include "brick_breaker.h"
+#include "brick_breaker_app.h"
 
 using brickbreaker::BrickBreakerApp;
 

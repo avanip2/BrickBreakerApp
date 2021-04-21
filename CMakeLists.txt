@@ -49,9 +49,11 @@ get_filename_component(APP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/" ABSOLUTE)
 
 include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 
-list(APPEND SOURCE_FILES    src/brick_breaker.cpp)
+list(APPEND SOURCE_FILES src/brick_breaker_app.cpp
+                            src/brick.cpp
+                            src/display_screen.cpp)
 
-list(APPEND TEST_FILES )
+list(APPEND TEST_FILES)
 
 ci_make_app(
         APP_NAME        brick-breaker
