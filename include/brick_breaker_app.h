@@ -12,7 +12,6 @@ class BrickBreakerApp : public ci::app::App {
   void draw() override;
   void update() override;
 
-  // provided that you can see the entire UI on your screen.
   const int kWindowSize = 1250;
   const int kMargin = 100;
 };
