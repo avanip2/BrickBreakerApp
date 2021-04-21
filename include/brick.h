@@ -5,6 +5,10 @@
 using glm::vec2;
 
 namespace brickbreaker {
+
+/**
+ * class to represent one brick
+ */
 class Brick {
  public:
   Brick(size_t set_num_hits, vec2 set_top_left_position, vec2 set_bottom_right_position, ci::Color set_color);

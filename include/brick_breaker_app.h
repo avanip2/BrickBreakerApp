@@ -5,6 +5,10 @@
 #include "cinder/gl/gl.h"
 
 namespace brickbreaker {
+
+/**
+ * app that runs the game
+ */
 class BrickBreakerApp : public ci::app::App {
  public:
   BrickBreakerApp();

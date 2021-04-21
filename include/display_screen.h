@@ -7,6 +7,9 @@ using glm::vec2;
 
 namespace brickbreaker {
 
+/**
+ * class to display parts of the game on the screen
+ */
 class DisplayScreen {
 
  public:
