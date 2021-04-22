@@ -37,7 +37,7 @@ class DisplayScreen {
   vec2 display_top_left_position_;
   vec2 display_bottom_right_position_;
 
-  std::vector<Brick> bricks_;
+  std::vector<std::vector<Brick>> brick_rows_;
 
   constexpr static size_t kNumberOfBricksPerRow = 5;
   constexpr static size_t kMinNumberOfHits = 1;
@@ -51,6 +51,5 @@ class DisplayScreen {
    */
   void AddBricksToDisplay(size_t y_position);
 
-  ci::Color RandomizeBrickColor();
 };
 }
