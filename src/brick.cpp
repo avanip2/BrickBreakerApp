@@ -15,6 +15,8 @@ Brick::Brick(size_t set_num_hits, vec2 set_top_left_position, vec2 set_bottom_ri
 void Brick::DisplayBrick() const {
   ci::gl::color(color_);
   ci::gl::drawSolidRect(ci::Rectf(top_left_position_, bottom_right_position_));
+  std::string num_hits_label = std::to_string(num_hits_);
+  ci::gl::drawStringCentered(num_hits_label, vec2{top_left_position_.x, bottom_right_position_.y});
 }
 
 void Brick::SetColor(ci::Color set_color) {
