@@ -52,5 +52,7 @@ class DisplayScreen {
   void AddBricksToDisplay(size_t y_position);
 
   void RemoveBrickFromDisplay(Brick &brick_to_remove);
+
+  void CheckOverlappingBricks();
 };
-}
+} //namespace brickbreaker

@@ -32,5 +32,6 @@ class Brick {
   vec2 top_left_position_;
   vec2 bottom_right_position_;
   ci::Color color_;
+  constexpr static size_t kStringMargin = 25;
 };
 } //namespace brickbreaker
