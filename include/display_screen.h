@@ -51,5 +51,6 @@ class DisplayScreen {
    */
   void AddBricksToDisplay(size_t y_position);
 
+
 };
 }

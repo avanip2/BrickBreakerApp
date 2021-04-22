@@ -8,6 +8,7 @@ DisplayScreen::DisplayScreen(vec2 set_display_top_left_position, vec2 set_displa
   display_top_left_position_ = set_display_top_left_position;
   display_bottom_right_position_ = set_display_bottom_right_position;
 
+  AddBricksToDisplay(kBrickSize);
 }
 
 void DisplayScreen::Display() const {
@@ -38,8 +39,7 @@ void DisplayScreen::AddBricksToDisplay(size_t y_position) {
     size_t num_hits = GenerateRandomNumber(kMinNumberOfHits, kMaxNumberOfHits);
     Brick new_brick(num_hits, vec2{x_position, y_position},
                     vec2{x_position + kBrickSize, y_position + kBrickSize},
-                    ci::Color(GenerateRandomNumber(kMinColor, kMaxColor), GenerateRandomNumber(kMinColor, kMaxColor),
-                              GenerateRandomNumber(kMinColor, kMaxColor)));
+                    ci::Color("blue"));
     bricks.push_back(new_brick);
     brick_rows_.push_back(bricks);
   }
