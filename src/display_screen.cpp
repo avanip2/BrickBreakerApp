@@ -45,6 +45,16 @@ void DisplayScreen::AddBricksToDisplay(size_t y_position) {
   }
 }
 
+void DisplayScreen::RemoveBrickFromDisplay(Brick &brick_to_remove) {
+  for (size_t row = 0; row < brick_rows_.size(); row++) {
+    for (Brick brick : brick_rows_[row]) {
+      if (brick.GetBottomRightPosition() == brick_to_remove.GetBottomRightPosition()) {
+        brick.SetColor(ci::Color("black"));
+      }
+    }
+  }
+}
+
 size_t DisplayScreen::GenerateRandomNumber(size_t min, size_t max) {
   size_t randomly_generated_number = ((rand() % (max - min + 1)) + min);
   return randomly_generated_number;
