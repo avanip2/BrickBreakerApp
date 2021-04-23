@@ -11,6 +11,17 @@ Ball::Ball(vec2 set_position, vec2 set_velocity, float set_radius, ci::Color set
   color_ = set_color;
 }
 
+Ball::Ball() {}
+
+void Ball::DisplayBall() const {
+  ci::gl::color(color_);
+  ci::gl::drawSolidCircle(position_, radius_);
+}
+
+void Ball::UpdatePosition() {
+  position_ += velocity_;
+}
+
 void Ball::SetColor(ci::Color set_color) {
   color_ = set_color;
 }
