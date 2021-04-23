@@ -9,12 +9,14 @@ DisplayScreen::DisplayScreen(vec2 set_display_top_left_position, vec2 set_displa
   display_bottom_right_position_ = set_display_bottom_right_position;
 
   AddBricksToDisplay(kMinBrickSize);
+  timer_.start();
 }
 
 void DisplayScreen::Display() const {
   for (size_t row = 0; row < brick_rows_.size(); row++) {
     for (Brick brick : brick_rows_[row]) {
       brick.DisplayBrick();
+
     }
   }
 
@@ -29,6 +31,9 @@ void DisplayScreen::AdvanceFrame() {
         RemoveBrickFromDisplay(brick);
       }
     }
+  }
+  if (timer_.getSeconds() == 60) {
+
   }
 }
 
