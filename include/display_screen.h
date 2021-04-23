@@ -39,10 +39,12 @@ class DisplayScreen {
 
   std::vector<std::vector<Brick>> brick_rows_;
 
-  constexpr static size_t kNumberOfBricksPerRow = 5;
+  constexpr static size_t kNumberOfBricksPerRow = 9;
   constexpr static size_t kMinNumberOfHits = 1;
   constexpr static size_t kMaxNumberOfHits = 10;
-  constexpr static size_t kBrickSize = 50;
+  constexpr static size_t kMinBrickSize = 50;
+  constexpr static size_t kMaxBrickSize = 100;
+  constexpr static size_t kBrickMargin = 10;
   constexpr static size_t kMinColor = 0;
   constexpr static size_t kMaxColor = 255;
 
@@ -53,6 +55,6 @@ class DisplayScreen {
 
   void RemoveBrickFromDisplay(Brick &brick_to_remove);
 
-  void CheckOverlappingBricks();
+  //void CheckOverlappingBricks();
 };
 } //namespace brickbreaker
