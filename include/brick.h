@@ -35,5 +35,7 @@ class Brick {
   vec2 bottom_right_position_;
   ci::Color color_;
   size_t brick_size_;
+
+  constexpr static size_t kStringYMargin = 25;
 };
 } //namespace brickbreaker
