@@ -1,4 +1,5 @@
 #include "display_screen.h"
+#include "util.h"
 
 namespace brickbreaker {
 
@@ -30,16 +31,13 @@ void DisplayScreen::Display() const {
 
 void DisplayScreen::AdvanceFrame() {
   //loop through the rows in the display
-  for (size_t row = 0; row < brick_rows_.size(); row++) {
+  for (Brick row : *brick_rows_.begin()) {
     //loop through the bricks in the row
-    for (Brick brick : brick_rows_[row]) {
-
-      //check if the brick's bottom right y position has reached the container's bottom right y position
-      if (brick.GetBottomRightPosition().y >= display_bottom_right_position_.y) {
-        RemoveBrickFromDisplay(brick);
-      }
+    if (brick_rows_[row][0].GetBottomRightPosition().y >= display_bottom_right_position_.y) {
+      brick_rows_[row].erase(row);
     }
   }
+  ball_.UpdatePosition();
 }
 
 void DisplayScreen::AddBricksToDisplay(size_t y_position) {
@@ -70,11 +68,6 @@ void DisplayScreen::AddBricksToDisplay(size_t y_position) {
 
 void DisplayScreen::RemoveBrickFromDisplay(Brick &brick_to_remove) {
   brick_to_remove.SetColor(ci::Color("black"));
-}
-
-size_t DisplayScreen::GenerateRandomNumber(size_t min, size_t max) {
-  size_t randomly_generated_number = ((rand() % (max - min + 1)) + min);
-  return randomly_generated_number;
 }
 
 } //namespace brickbreaker

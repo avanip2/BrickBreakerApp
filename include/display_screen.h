@@ -27,13 +27,6 @@ class DisplayScreen {
    */
   void AdvanceFrame();
 
-  /**
-   * helper method to calculate a random number
-   * @param min lower bound
-   * @param max upper bound
-   * @return the random number
-   */
-  size_t GenerateRandomNumber(size_t min, size_t max);
  private:
   //member variables of display
   vec2 display_top_left_position_;
