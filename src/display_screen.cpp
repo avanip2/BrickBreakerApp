@@ -9,7 +9,6 @@ DisplayScreen::DisplayScreen(vec2 set_display_top_left_position, vec2 set_displa
   display_bottom_right_position_ = set_display_bottom_right_position;
 
   AddBricksToDisplay(kMinBrickSize);
-  timer_.start();
   ball_ = Ball(display_bottom_right_position_, vec2{1,1}, 10, ci::Color("red"));
 }
 
@@ -17,7 +16,7 @@ void DisplayScreen::Display() const {
   //loop through the rows in the display
   for (size_t row = 0; row < brick_rows_.size(); row++) {
     //loop through bricks in the row
-    for (Brick brick : brick_rows_[row]) {
+    for (const Brick &brick : brick_rows_[row]) {
       //display each brick
       brick.DisplayBrick();
     }

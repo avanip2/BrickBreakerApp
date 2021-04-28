@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cinder/Timer.h>
 #include "cinder/gl/gl.h"
 #include "brick.h"
 #include "ball.h"
@@ -39,7 +38,6 @@ class DisplayScreen {
   //member variables of display
   vec2 display_top_left_position_;
   vec2 display_bottom_right_position_;
-  cinder::Timer timer_;
   std::vector<std::vector<Brick>> brick_rows_;
   Ball ball_;
 
