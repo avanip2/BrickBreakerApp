@@ -10,7 +10,8 @@ DisplayScreen::DisplayScreen(vec2 set_display_top_left_position, vec2 set_displa
   display_bottom_right_position_ = set_display_bottom_right_position;
 
   AddBricksToDisplay(kMinBrickSize);
-  ball_ = Ball(display_bottom_right_position_, vec2{1,1}, 10, ci::Color("red"));
+  ball_ = Ball(vec2{display_bottom_right_position_.x / 2, display_bottom_right_position_.y / 2},
+               vec2{kBallVelocity,kBallVelocity}, kBallSize,ci::Color("red"));
 }
 
 void DisplayScreen::Display() const {
@@ -31,12 +32,15 @@ void DisplayScreen::Display() const {
 
 void DisplayScreen::AdvanceFrame() {
   //loop through the rows in the display
-  for (Brick row : *brick_rows_.begin()) {
+  for (size_t row = 0; row < brick_rows_.size(); row++) {
     //loop through the bricks in the row
-    if (brick_rows_[row][0].GetBottomRightPosition().y >= display_bottom_right_position_.y) {
-      brick_rows_[row].erase(row);
+    for (Brick &brick : brick_rows_[row]) {
+      if (brick.GetBottomRightPosition().y >= display_bottom_right_position_.y) {
+        brick_rows_.clear();
+      }
     }
   }
+  UpdateForBallCollisionWithWall(ball_);
   ball_.UpdatePosition();
 }
 
@@ -64,6 +68,29 @@ void DisplayScreen::AddBricksToDisplay(size_t y_position) {
 
   //push row of bricks back to the row of bricks vector
   brick_rows_.push_back(bricks);
+}
+
+bool DisplayScreen::HasBallCollidedWithSideOfBrick(Ball &ball, Brick &brick) {
+  //float x_velocity = ball.GetVelocity().x;
+  //float y_velocity = ball.GetVelocity().y;
+  return true;
+}
+
+void DisplayScreen::UpdateForBallCollisionWithWall(Ball &ball) {
+  float x_velocity = ball.GetVelocity().x;
+  float y_velocity = ball.GetVelocity().y;
+
+  if (((ball.GetPosition().y - ball.GetRadius()) <= display_top_left_position_.y && y_velocity < 0) ||
+      (ball.GetPosition().y + ball.GetRadius() >= display_bottom_right_position_.y && y_velocity > 0)) {
+    y_velocity *= -1;
+  }
+
+  if (((ball.GetPosition().x - ball.GetRadius()) <= display_top_left_position_.x && x_velocity < 0) ||
+      (ball.GetPosition().x + ball.GetRadius() >= display_bottom_right_position_.x && x_velocity > 0)) {
+    x_velocity *= -1;
+  }
+
+  ball.SetVelocity(vec2{x_velocity, y_velocity});
 }
 
 void DisplayScreen::RemoveBrickFromDisplay(Brick &brick_to_remove) {

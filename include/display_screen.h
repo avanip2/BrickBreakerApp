@@ -41,6 +41,8 @@ class DisplayScreen {
   constexpr static size_t kMinBrickSize = 50;
   constexpr static size_t kMaxBrickSize = 100;
   constexpr static size_t kBrickMargin = 10;
+  constexpr static int kBallVelocity = -5;
+  constexpr static size_t kBallSize = 10;
 
   /**
    * helper method to create and add bricks to the display
@@ -52,5 +54,9 @@ class DisplayScreen {
    * @param brick_to_remove brick to remove
    */
   void RemoveBrickFromDisplay(Brick &brick_to_remove);
+
+  bool HasBallCollidedWithSideOfBrick(Ball &ball, Brick &brick);
+
+  void UpdateForBallCollisionWithWall(Ball &ball);
 };
 } //namespace brickbreaker
