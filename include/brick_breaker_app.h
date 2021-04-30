@@ -33,6 +33,8 @@ class BrickBreakerApp : public ci::app::App {
   const int kWindowSize = 1250;
   const int kMargin = 100;
   const int kPaddleChange = 10;
+  constexpr static int kBallXVelocity = -5;
+  constexpr static int kBallYVelocity = -6;
  private:
   DisplayScreen display_;
 

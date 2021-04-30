@@ -31,6 +31,9 @@ void BrickBreakerApp::keyDown(ci::app::KeyEvent event) {
       display_.paddle_.MovePaddle();
       break;
     }
+    case ci::app::KeyEvent::KEY_SPACE: {
+      display_.ball_.SetVelocity(vec2{kBallXVelocity, kBallYVelocity});
+    }
   }
 }
 

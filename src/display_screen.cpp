@@ -12,7 +12,7 @@ DisplayScreen::DisplayScreen(vec2 set_display_top_left_position, vec2 set_displa
   //add bricks, ball and paddle to the display by initializing them here
   AddBricksToDisplay(kMinBrickSize);
   ball_ = Ball(vec2{display_bottom_right_position_.x / 2, display_bottom_right_position_.y / 2},
-               vec2{kBallXVelocity,kBallYVelocity}, kBallSize,ci::Color("red"));
+               vec2{0,0}, kBallSize,ci::Color("red"));
   paddle_ = Paddle(vec2{kPaddleLocation, display_bottom_right_position_.x - kPaddleSize},
                    vec2{kPaddleLocation + kPaddleLength, display_bottom_right_position_.x}, ci::Color("gray"));
   num_lives_ = 3;
@@ -99,21 +99,31 @@ void DisplayScreen::UpdateForBrickCollision(Ball &ball, Brick &brick) {
   float y_velocity = ball.GetVelocity().y;
   size_t num_hits = brick.GetNumHits();
 
+  //check if the ball is moving in the right direction for a collision to occur
   if ((ball.GetPosition().x >= brick.GetTopLeftPosition().x && x_velocity > 0) ||
       (ball.GetPosition().x <= brick.GetBottomRightPosition().x && x_velocity < 0)) {
+
+    //check if the y position of the ball matches that of a brick
     if (brick.GetTopLeftPosition().y <= ball.GetPosition().y && brick.GetBottomRightPosition().y >= ball.GetPosition().y) {
+      //set velocity and num hits accordingly
       x_velocity *= -1;
       num_hits--;
     }
   }
+
+  //check if the ball is moving in the right direction for a collision to occur
   if ((ball.GetPosition().y >= brick.GetTopLeftPosition().y && y_velocity > 0) ||
       (ball.GetPosition().y <= brick.GetBottomRightPosition().y && y_velocity < 0)) {
+
+    //check if the x position of the ball matches that of a brick
     if (brick.GetTopLeftPosition().x <= ball.GetPosition().x && brick.GetBottomRightPosition().x >= ball.GetPosition().x) {
+      //set velocity and num hits accordingly
       y_velocity *= -1;
       num_hits--;
     }
   }
 
+  //set the attributes of the ball and brick based on changes in if statements
   ball.SetVelocity(vec2{x_velocity, y_velocity});
   brick.SetNumHits(num_hits);
   //check to see if the ball is between the two y coordinates of the brick to see if a collision is even possible

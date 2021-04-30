@@ -30,12 +30,13 @@ class DisplayScreen {
 
   Paddle paddle_;
 
+  Ball ball_;
+
  private:
   //member variables of display
   vec2 display_top_left_position_;
   vec2 display_bottom_right_position_;
   std::vector<std::vector<Brick>> brick_rows_;
-  Ball ball_;
   size_t num_lives_;
 
   //constants for drawing and randomizing objects in the display
@@ -45,8 +46,6 @@ class DisplayScreen {
   constexpr static size_t kMinBrickSize = 50;
   constexpr static size_t kMaxBrickSize = 100;
   constexpr static size_t kBrickMargin = 2;
-  constexpr static int kBallXVelocity = -5;
-  constexpr static int kBallYVelocity = -6;
   constexpr static size_t kBallSize = 10;
   constexpr static size_t kPaddleLocation = 400;
   constexpr static size_t kPaddleSize = 20;
