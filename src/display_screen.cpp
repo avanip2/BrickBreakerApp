@@ -48,10 +48,13 @@ void DisplayScreen::AdvanceFrame() {
       //check if a collision has occurred between the ball and the current brick
       UpdateForBrickCollision(ball_, brick);
       if (brick.GetNumHits() == 0) {
+        brick.SetNumHits(10); //placeholder
         // TODO: figure out how to remove a single brick from the 2d vector
       }
     }
   }
+
+  // TODO: figure out how to use a sleep timer to add new bricks periodically
 
   //check if the number of lives is 0 and set the ball's position and velocity accordingly
   if (num_lives_ == 0) {
@@ -96,23 +99,40 @@ void DisplayScreen::UpdateForBrickCollision(Ball &ball, Brick &brick) {
   float y_velocity = ball.GetVelocity().y;
   size_t num_hits = brick.GetNumHits();
 
-  //check to see if the ball is between the two y coordinates of the brick to see if a collision is even possible
-  if (brick.GetTopLeftPosition().y <= ball.GetPosition().y && brick.GetBottomRightPosition().y >= ball.GetPosition().y) {
-
-    //check that the ball's x position is the same as the brick's top left x position and the ball is moving in the right direction
-    if (ball.GetPosition().x >= brick.GetTopLeftPosition().x && x_velocity > 0) {
-      //set the ball's velocity and number of hits accordingly
-      ball.SetVelocity(vec2{-x_velocity, y_velocity});
-      brick.SetNumHits(num_hits--);
-    }
-
-    //check that the ball's x position is the same as the brick's bottom right x position and the ball is moving in the right direction
-    if (ball.GetPosition().x <= brick.GetBottomRightPosition().x && x_velocity < 0) {
-      //set the ball's velocity and number of hits on a brick
-      ball.SetVelocity(vec2{-x_velocity, y_velocity});
-      brick.SetNumHits(num_hits--);
+  if ((ball.GetPosition().x >= brick.GetTopLeftPosition().x && x_velocity > 0) ||
+      (ball.GetPosition().x <= brick.GetBottomRightPosition().x && x_velocity < 0)) {
+    if (brick.GetTopLeftPosition().y <= ball.GetPosition().y && brick.GetBottomRightPosition().y >= ball.GetPosition().y) {
+      x_velocity *= -1;
+      num_hits--;
     }
   }
+  if ((ball.GetPosition().y >= brick.GetTopLeftPosition().y && y_velocity > 0) ||
+      (ball.GetPosition().y <= brick.GetBottomRightPosition().y && y_velocity < 0)) {
+    if (brick.GetTopLeftPosition().x <= ball.GetPosition().x && brick.GetBottomRightPosition().x >= ball.GetPosition().x) {
+      y_velocity *= -1;
+      num_hits--;
+    }
+  }
+
+  ball.SetVelocity(vec2{x_velocity, y_velocity});
+  brick.SetNumHits(num_hits);
+  //check to see if the ball is between the two y coordinates of the brick to see if a collision is even possible
+  //if (brick.GetTopLeftPosition().y <= ball.GetPosition().y && brick.GetBottomRightPosition().y >= ball.GetPosition().y) {
+
+    //check that the ball's x position is the same as the brick's top left x position and the ball is moving in the right direction
+    //if (ball.GetPosition().x >= brick.GetTopLeftPosition().x && x_velocity > 0) {
+      //set the ball's velocity and number of hits accordingly
+      //ball.SetVelocity(vec2{-x_velocity, y_velocity});
+      //brick.SetNumHits(num_hits--);
+    //}
+
+    //check that the ball's x position is the same as the brick's bottom right x position and the ball is moving in the right direction
+    //if (ball.GetPosition().x <= brick.GetBottomRightPosition().x && x_velocity < 0) {
+      //set the ball's velocity and number of hits on a brick
+      //ball.SetVelocity(vec2{-x_velocity, y_velocity});
+      //brick.SetNumHits(num_hits--);
+    //}
+
 }
 
 void DisplayScreen::UpdateForBallCollisionWithWall(Ball &ball) {

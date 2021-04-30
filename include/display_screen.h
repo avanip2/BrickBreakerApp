@@ -39,7 +39,7 @@ class DisplayScreen {
   size_t num_lives_;
 
   //constants for drawing and randomizing objects in the display
-  constexpr static size_t kNumberOfBricksPerRow = 10;
+  constexpr static size_t kNumberOfBricksPerRow = 9;
   constexpr static size_t kMinNumberOfHits = 1;
   constexpr static size_t kMaxNumberOfHits = 10;
   constexpr static size_t kMinBrickSize = 50;

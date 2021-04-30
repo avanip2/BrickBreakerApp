@@ -21,6 +21,7 @@ class Paddle {
    */
   void MovePaddle();
 
+  //setters and getters
   void SetPaddleTopLeft(vec2 set_paddle_top_left);
 
   vec2 GetPaddleTopLeft();
