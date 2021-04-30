@@ -53,7 +53,8 @@ list(APPEND SOURCE_FILES src/brick_breaker_app.cpp
                             src/brick.cpp
                             src/display_screen.cpp
                             src/ball.cpp
-                            src/util.cpp)
+                            src/util.cpp
+                            src/paddle.cpp)
 
 list(APPEND TEST_FILES)
 

@@ -12,6 +12,8 @@ DisplayScreen::DisplayScreen(vec2 set_display_top_left_position, vec2 set_displa
   AddBricksToDisplay(kMinBrickSize);
   ball_ = Ball(vec2{display_bottom_right_position_.x / 2, display_bottom_right_position_.y / 2},
                vec2{kBallXVelocity,kBallYVelocity}, kBallSize,ci::Color("red"));
+  paddle_ = Paddle(vec2{kPaddleLocation, display_bottom_right_position_.x - kPaddleSize},
+                   vec2{kPaddleLocation + kPaddleLength, display_bottom_right_position_.x}, ci::Color("gray"));
   num_lives_ = 3;
 }
 
@@ -27,11 +29,13 @@ void DisplayScreen::Display() const {
 
   //display the ball
   ball_.DisplayBall();
+  paddle_.DisplayPaddle();
   ci::gl::color(ci::Color("White"));
   ci::gl::drawStrokedRect(ci::Rectf(display_top_left_position_, display_bottom_right_position_));
 }
 
 void DisplayScreen::AdvanceFrame() {
+  UpdateForBallCollisionWithWall(ball_);
   //loop through the rows in the display
   for (size_t row = 0; row < brick_rows_.size(); row++) {
     //loop through the bricks in the row
@@ -40,13 +44,15 @@ void DisplayScreen::AdvanceFrame() {
         brick_rows_.clear();
       }
       UpdateForBrickCollision(ball_, brick);
+      if (brick.GetNumHits() == 0) {
+        brick.SetNumHits(10);
+      }
     }
   }
   if (num_lives_ == 0) {
     ball_.SetVelocity(vec2{0,0});
     ball_.SetPosition(vec2{display_bottom_right_position_.x / 2, display_bottom_right_position_.y / 2});
   }
-  UpdateForBallCollisionWithWall(ball_);
   ball_.UpdatePosition();
 }
 
@@ -81,12 +87,12 @@ void DisplayScreen::UpdateForBrickCollision(Ball &ball, Brick &brick) {
   float y_velocity = ball.GetVelocity().y;
   size_t num_hits = brick.GetNumHits();
 
-  if (brick.GetTopLeftPosition().y <= ball.GetPosition().y <= brick.GetBottomRightPosition().y) {
-    if ((ball.GetPosition().x + ball.GetRadius()) >= brick.GetTopLeftPosition().x && x_velocity > 0) {
+  if (brick.GetTopLeftPosition().y <= ball.GetPosition().y && brick.GetBottomRightPosition().y >= ball.GetPosition().y) {
+    if (ball.GetPosition().x >= brick.GetTopLeftPosition().x && x_velocity > 0) {
       ball.SetVelocity(vec2{-x_velocity, y_velocity});
       brick.SetNumHits(num_hits--);
     }
-    if ((ball.GetPosition().x - ball.GetRadius()) <= brick.GetBottomRightPosition().x && x_velocity > 0) {
+    if (ball.GetPosition().x <= brick.GetBottomRightPosition().x && x_velocity < 0) {
       ball.SetVelocity(vec2{-x_velocity, y_velocity});
       brick.SetNumHits(num_hits--);
     }
@@ -101,7 +107,7 @@ void DisplayScreen::UpdateForBallCollisionWithWall(Ball &ball) {
     y_velocity *= -1;
   }
 
-  if ((ball.GetPosition().y + ball.GetRadius() >= display_bottom_right_position_.y && ball.GetVelocity().y > 0)) {
+  if ((ball.GetPosition().y + ball.GetRadius()) >= display_bottom_right_position_.y && ball.GetVelocity().y > 0) {
     y_velocity *= -1;
     //num_lives_--;
     //ball.SetPosition(vec2{display_bottom_right_position_.x / 2, display_bottom_right_position_.y / 2});

@@ -3,6 +3,7 @@
 #include "cinder/gl/gl.h"
 #include "brick.h"
 #include "ball.h"
+#include "paddle.h"
 
 using glm::vec2;
 
@@ -33,18 +34,22 @@ class DisplayScreen {
   vec2 display_bottom_right_position_;
   std::vector<std::vector<Brick>> brick_rows_;
   Ball ball_;
+  Paddle paddle_;
   size_t num_lives_;
 
   //constants for drawing and randomizing objects in the display
-  constexpr static size_t kNumberOfBricksPerRow = 8;
+  constexpr static size_t kNumberOfBricksPerRow = 10;
   constexpr static size_t kMinNumberOfHits = 1;
   constexpr static size_t kMaxNumberOfHits = 10;
   constexpr static size_t kMinBrickSize = 50;
   constexpr static size_t kMaxBrickSize = 100;
-  constexpr static size_t kBrickMargin = 10;
+  constexpr static size_t kBrickMargin = 2;
   constexpr static int kBallXVelocity = -5;
   constexpr static int kBallYVelocity = -6;
   constexpr static size_t kBallSize = 10;
+  constexpr static size_t kPaddleLocation = 400;
+  constexpr static size_t kPaddleSize = 20;
+  constexpr static size_t kPaddleLength = 150;
 
   /**
    * helper method to create and add bricks to the display
