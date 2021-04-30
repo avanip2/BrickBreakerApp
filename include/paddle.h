@@ -25,9 +25,14 @@ class Paddle {
 
   ci::Color GetColor();
 
+  void SetChangeInX(int set_change_in_x);
+
+  void MovePaddle();
+
  private:
   vec2 paddle_top_left_;
   vec2 paddle_bottom_right_;
   ci::Color color_;
+  int change_in_x_;
 };
 }

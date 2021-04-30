@@ -40,4 +40,15 @@ void Paddle::SetColor(ci::Color set_color) {
 ci::Color Paddle::GetColor() {
   return color_;
 }
+
+void Paddle::SetChangeInX(int set_change_in_x) {
+  change_in_x_ = set_change_in_x;
+}
+
+void Paddle::MovePaddle() {
+  size_t curr_paddle_top_left_x = paddle_top_left_.x;
+  size_t curr_paddle_bottom_right_x = paddle_bottom_right_.x;
+  paddle_top_left_ = vec2{curr_paddle_top_left_x + change_in_x_, paddle_top_left_.y};
+  paddle_bottom_right_ = vec2{curr_paddle_bottom_right_x + change_in_x_, paddle_bottom_right_.y};
+}
 } //namespace brickbreaker

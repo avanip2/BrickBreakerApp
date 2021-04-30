@@ -66,4 +66,5 @@ void Brick::SetBrickSize(size_t set_brick_size) {
 size_t Brick::GetBrickSize() {
   return brick_size_;
 }
+
 } //namespace brickbreaker

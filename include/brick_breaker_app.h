@@ -16,10 +16,12 @@ class BrickBreakerApp : public ci::app::App {
 
   void draw() override;
   void update() override;
+  void keyDown(ci::app::KeyEvent event) override;
 
   const int kWindowSize = 1250;
   const int kMargin = 100;
  private:
   DisplayScreen display_;
+
 };
 } // namespace brickbreaker

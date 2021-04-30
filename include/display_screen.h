@@ -28,13 +28,14 @@ class DisplayScreen {
    */
   void AdvanceFrame();
 
+  Paddle paddle_;
+
  private:
   //member variables of display
   vec2 display_top_left_position_;
   vec2 display_bottom_right_position_;
   std::vector<std::vector<Brick>> brick_rows_;
   Ball ball_;
-  Paddle paddle_;
   size_t num_lives_;
 
   //constants for drawing and randomizing objects in the display
