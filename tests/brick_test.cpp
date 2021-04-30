@@ -1,4 +1,6 @@
-//
-// Created by Avani Puranik on 4/30/21.
-//
+#include "brick.h"
+#include <catch2/catch.hpp>
+
+using glm::vec2;
+using brickbreaker::Brick;
 
