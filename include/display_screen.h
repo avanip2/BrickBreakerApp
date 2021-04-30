@@ -63,8 +63,17 @@ class DisplayScreen {
    */
   void RemoveBrickFromDisplay(Brick &brick_to_remove);
 
+  /**
+   * determine if a collision with the entered brick and ball has occurred and update velocities and hits
+   * @param ball display ball
+   * @param brick specific brick in the row
+   */
   void UpdateForBrickCollision(Ball &ball, Brick &brick);
 
+  /**
+   * determine if a collision between the ball and the wall has occurred
+   * @param ball display ball
+   */
   void UpdateForBallCollisionWithWall(Ball &ball);
 };
 } //namespace brickbreaker

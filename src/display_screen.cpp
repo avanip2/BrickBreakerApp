@@ -9,6 +9,7 @@ DisplayScreen::DisplayScreen(vec2 set_display_top_left_position, vec2 set_displa
   display_top_left_position_ = set_display_top_left_position;
   display_bottom_right_position_ = set_display_bottom_right_position;
 
+  //add bricks, ball and paddle to the display by initializing them here
   AddBricksToDisplay(kMinBrickSize);
   ball_ = Ball(vec2{display_bottom_right_position_.x / 2, display_bottom_right_position_.y / 2},
                vec2{kBallXVelocity,kBallYVelocity}, kBallSize,ci::Color("red"));
@@ -27,7 +28,7 @@ void DisplayScreen::Display() const {
     }
   }
 
-  //display the ball
+  //display the ball and paddle
   ball_.DisplayBall();
   paddle_.DisplayPaddle();
   ci::gl::color(ci::Color("White"));
@@ -35,24 +36,31 @@ void DisplayScreen::Display() const {
 }
 
 void DisplayScreen::AdvanceFrame() {
-  UpdateForBallCollisionWithWall(ball_);
   //loop through the rows in the display
   for (size_t row = 0; row < brick_rows_.size(); row++) {
     //loop through the bricks in the row
     for (Brick &brick : brick_rows_[row]) {
       if (brick.GetBottomRightPosition().y >= display_bottom_right_position_.y) {
+        //remove all bricks from the display if a row has reached the bottom
         brick_rows_.clear();
       }
+
+      //check if a collision has occurred between the ball and the current brick
       UpdateForBrickCollision(ball_, brick);
       if (brick.GetNumHits() == 0) {
-        brick.SetNumHits(10);
+        // TODO: figure out how to remove a single brick from the 2d vector
       }
     }
   }
+
+  //check if the number of lives is 0 and set the ball's position and velocity accordingly
   if (num_lives_ == 0) {
     ball_.SetVelocity(vec2{0,0});
     ball_.SetPosition(vec2{display_bottom_right_position_.x / 2, display_bottom_right_position_.y / 2});
   }
+
+  //check for ball collision with the wall and update the position of the ball
+  UpdateForBallCollisionWithWall(ball_);
   ball_.UpdatePosition();
 }
 
@@ -83,16 +91,24 @@ void DisplayScreen::AddBricksToDisplay(size_t y_position) {
 }
 
 void DisplayScreen::UpdateForBrickCollision(Ball &ball, Brick &brick) {
+  //set initial variables for velocity of ball and number of hits on a brick
   float x_velocity = ball.GetVelocity().x;
   float y_velocity = ball.GetVelocity().y;
   size_t num_hits = brick.GetNumHits();
 
+  //check to see if the ball is between the two y coordinates of the brick to see if a collision is even possible
   if (brick.GetTopLeftPosition().y <= ball.GetPosition().y && brick.GetBottomRightPosition().y >= ball.GetPosition().y) {
+
+    //check that the ball's x position is the same as the brick's top left x position and the ball is moving in the right direction
     if (ball.GetPosition().x >= brick.GetTopLeftPosition().x && x_velocity > 0) {
+      //set the ball's velocity and number of hits accordingly
       ball.SetVelocity(vec2{-x_velocity, y_velocity});
       brick.SetNumHits(num_hits--);
     }
+
+    //check that the ball's x position is the same as the brick's bottom right x position and the ball is moving in the right direction
     if (ball.GetPosition().x <= brick.GetBottomRightPosition().x && x_velocity < 0) {
+      //set the ball's velocity and number of hits on a brick
       ball.SetVelocity(vec2{-x_velocity, y_velocity});
       brick.SetNumHits(num_hits--);
     }
@@ -100,13 +116,16 @@ void DisplayScreen::UpdateForBrickCollision(Ball &ball, Brick &brick) {
 }
 
 void DisplayScreen::UpdateForBallCollisionWithWall(Ball &ball) {
+  //set initial variables for the x and y velocities of the ball
   float x_velocity = ball.GetVelocity().x;
   float y_velocity = ball.GetVelocity().y;
 
+  //check to make sure a collision with the wall is possible and negate y_velocity if collision has happened
   if ((ball.GetPosition().y - ball.GetRadius()) <= display_top_left_position_.y && y_velocity < 0) {
     y_velocity *= -1;
   }
 
+  //if the ball has reached the bottom, decrement the number of lives(commented out for purposes of making sure other code works)
   if ((ball.GetPosition().y + ball.GetRadius()) >= display_bottom_right_position_.y && ball.GetVelocity().y > 0) {
     y_velocity *= -1;
     //num_lives_--;
@@ -114,11 +133,13 @@ void DisplayScreen::UpdateForBallCollisionWithWall(Ball &ball) {
     //ball.SetVelocity(vec2{kBallXVelocity,kBallYVelocity});
   }
 
+  //check if the ball has collided with the side walls and negate the x_velocity accordingly
   if (((ball.GetPosition().x - ball.GetRadius()) <= display_top_left_position_.x && x_velocity < 0) ||
       (ball.GetPosition().x + ball.GetRadius() >= display_bottom_right_position_.x && x_velocity > 0)) {
     x_velocity *= -1;
   }
 
+  //set the ball's updated velocity using new values
   ball.SetVelocity(vec2{x_velocity, y_velocity});
 }
 

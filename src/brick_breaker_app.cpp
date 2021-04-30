@@ -22,16 +22,16 @@ void BrickBreakerApp::update() {
 void BrickBreakerApp::keyDown(ci::app::KeyEvent event) {
   switch(event.getCode()) {
     case ci::app::KeyEvent::KEY_RIGHT: {
-      display_.paddle_.SetChangeInX(10);
+      display_.paddle_.SetChangeInX(kPaddleChange);
       display_.paddle_.MovePaddle();
       break;
     }
     case ci::app::KeyEvent::KEY_LEFT: {
-      display_.paddle_.SetChangeInX(-10);
+      display_.paddle_.SetChangeInX(-kPaddleChange);
       display_.paddle_.MovePaddle();
       break;
     }
   }
 }
 
-}  // namespace brickbreasker
+}  // namespace brickbreaker

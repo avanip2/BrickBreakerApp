@@ -14,12 +14,25 @@ class BrickBreakerApp : public ci::app::App {
  public:
   BrickBreakerApp();
 
+  /**
+   * override method to draw
+   */
   void draw() override;
+
+  /**
+   * override method to update screen
+   */
   void update() override;
+
+  /**
+   * override method to add key event for paddle
+   * @param event identified key event
+   */
   void keyDown(ci::app::KeyEvent event) override;
 
   const int kWindowSize = 1250;
   const int kMargin = 100;
+  const int kPaddleChange = 10;
  private:
   DisplayScreen display_;
 
