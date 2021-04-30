@@ -33,6 +33,7 @@ class DisplayScreen {
   vec2 display_bottom_right_position_;
   std::vector<std::vector<Brick>> brick_rows_;
   Ball ball_;
+  size_t num_lives_;
 
   //constants for drawing and randomizing objects in the display
   constexpr static size_t kNumberOfBricksPerRow = 8;
@@ -41,7 +42,8 @@ class DisplayScreen {
   constexpr static size_t kMinBrickSize = 50;
   constexpr static size_t kMaxBrickSize = 100;
   constexpr static size_t kBrickMargin = 10;
-  constexpr static int kBallVelocity = -5;
+  constexpr static int kBallXVelocity = -5;
+  constexpr static int kBallYVelocity = -6;
   constexpr static size_t kBallSize = 10;
 
   /**
@@ -55,7 +57,7 @@ class DisplayScreen {
    */
   void RemoveBrickFromDisplay(Brick &brick_to_remove);
 
-  void UpdateForBallCollisionWithBrick(Ball &ball, Brick &brick);
+  bool HasBallCollidedWithBrick(Ball &ball, Brick &brick);
 
   void UpdateForBallCollisionWithWall(Ball &ball);
 };
