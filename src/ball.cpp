@@ -14,7 +14,9 @@ Ball::Ball(vec2 set_position, vec2 set_velocity, float set_radius, ci::Color set
 Ball::Ball() {}
 
 void Ball::DisplayBall() const {
+  std::string label = std::to_string(position_.x) + " + " + std::to_string(position_.y);
   ci::gl::color(color_);
+  ci::gl::drawStringCentered(label, vec2{700, 700});
   ci::gl::drawSolidCircle(position_, radius_);
 }
 
