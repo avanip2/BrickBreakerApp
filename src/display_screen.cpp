@@ -36,19 +36,11 @@ void DisplayScreen::AdvanceFrame() {
   for (size_t row = 0; row < brick_rows_.size(); row++) {
     //loop through the bricks in the row
     for (Brick &brick : brick_rows_[row]) {
-      size_t current_brick_hits = brick.GetNumHits();
       if (brick.GetBottomRightPosition().y >= display_bottom_right_position_.y) {
         brick_rows_.clear();
       }
-      if (HasBallCollidedWithBrick(ball_, brick)) {
-        brick.SetNumHits(current_brick_hits--);
-      }
+      UpdateForBrickCollision(ball_, brick);
     }
-  }
-  if ((ball_.GetPosition().y + ball_.GetRadius() >= display_bottom_right_position_.y && ball_.GetVelocity().y > 0)) {
-    num_lives_--;
-    ball_.SetPosition(vec2{display_bottom_right_position_.x / 2, display_bottom_right_position_.y / 2});
-    ball_.SetVelocity(vec2{kBallXVelocity,kBallYVelocity});
   }
   if (num_lives_ == 0) {
     ball_.SetVelocity(vec2{0,0});
@@ -84,32 +76,21 @@ void DisplayScreen::AddBricksToDisplay(size_t y_position) {
   brick_rows_.push_back(bricks);
 }
 
-bool DisplayScreen::HasBallCollidedWithBrick(Ball &ball, Brick &brick) {
+void DisplayScreen::UpdateForBrickCollision(Ball &ball, Brick &brick) {
   float x_velocity = ball.GetVelocity().x;
   float y_velocity = ball.GetVelocity().y;
+  size_t num_hits = brick.GetNumHits();
 
-  if (ball.GetPosition().y >= brick.GetTopLeftPosition().y && ball.GetPosition().y <= brick.GetBottomRightPosition().y) {
+  if (brick.GetTopLeftPosition().y <= ball.GetPosition().y <= brick.GetBottomRightPosition().y) {
     if ((ball.GetPosition().x + ball.GetRadius()) >= brick.GetTopLeftPosition().x && x_velocity > 0) {
-      x_velocity *= -1;
-      return true;
+      ball.SetVelocity(vec2{-x_velocity, y_velocity});
+      brick.SetNumHits(num_hits--);
     }
-    if ((ball.GetPosition().x - ball.GetRadius()) <= brick.GetBottomRightPosition().x && x_velocity < 0) {
-      x_velocity *= -1;
-      return true;
-    }
-  }
-  if (ball.GetPosition().x >= brick.GetTopLeftPosition().x && ball.GetPosition().x <= brick.GetBottomRightPosition().x) {
-    if ((ball.GetPosition().y + ball.GetRadius()) >= brick.GetTopLeftPosition().y && y_velocity < 0) {
-      y_velocity *= -1;
-      return true;
-    }
-    if ((ball.GetPosition().y - ball.GetRadius()) <= brick.GetBottomRightPosition().y && y_velocity > 0) {
-      y_velocity *= -1;
-      return true;
+    if ((ball.GetPosition().x - ball.GetRadius()) <= brick.GetBottomRightPosition().x && x_velocity > 0) {
+      ball.SetVelocity(vec2{-x_velocity, y_velocity});
+      brick.SetNumHits(num_hits--);
     }
   }
-  ball.SetVelocity(vec2{x_velocity, y_velocity});
-  return false;
 }
 
 void DisplayScreen::UpdateForBallCollisionWithWall(Ball &ball) {
@@ -121,9 +102,10 @@ void DisplayScreen::UpdateForBallCollisionWithWall(Ball &ball) {
   }
 
   if ((ball.GetPosition().y + ball.GetRadius() >= display_bottom_right_position_.y && ball.GetVelocity().y > 0)) {
-    num_lives_--;
-    ball.SetPosition(vec2{display_bottom_right_position_.x / 2, display_bottom_right_position_.y / 2});
-    ball.SetVelocity(vec2{kBallXVelocity,kBallYVelocity});
+    y_velocity *= -1;
+    //num_lives_--;
+    //ball.SetPosition(vec2{display_bottom_right_position_.x / 2, display_bottom_right_position_.y / 2});
+    //ball.SetVelocity(vec2{kBallXVelocity,kBallYVelocity});
   }
 
   if (((ball.GetPosition().x - ball.GetRadius()) <= display_top_left_position_.x && x_velocity < 0) ||
