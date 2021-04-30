@@ -38,6 +38,7 @@ void DisplayScreen::AdvanceFrame() {
       if (brick.GetBottomRightPosition().y >= display_bottom_right_position_.y) {
         brick_rows_.clear();
       }
+      UpdateForBallCollisionWithBrick(ball_, brick);
     }
   }
   UpdateForBallCollisionWithWall(ball_);
@@ -70,10 +71,19 @@ void DisplayScreen::AddBricksToDisplay(size_t y_position) {
   brick_rows_.push_back(bricks);
 }
 
-bool DisplayScreen::HasBallCollidedWithSideOfBrick(Ball &ball, Brick &brick) {
-  //float x_velocity = ball.GetVelocity().x;
-  //float y_velocity = ball.GetVelocity().y;
-  return true;
+void DisplayScreen::UpdateForBallCollisionWithBrick(Ball &ball, Brick &brick) {
+  float x_velocity = ball.GetVelocity().x;
+  float y_velocity = ball.GetVelocity().y;
+  size_t brick_hits = brick.GetNumHits();
+
+  if (brick.GetTopLeftPosition().y >= ball.GetPosition().y >= brick.GetBottomRightPosition().y) {
+    if (((ball.GetPosition().y - ball.GetRadius()) <= brick.GetTopLeftPosition().y && y_velocity < 0) ||
+        (ball.GetPosition().y + ball.GetRadius() >= brick.GetBottomRightPosition().y && y_velocity > 0)) {
+      y_velocity *= -1;
+    }
+  }
+  brick.SetNumHits(brick_hits - 1);
+  ball.SetVelocity(vec2{x_velocity, y_velocity});
 }
 
 void DisplayScreen::UpdateForBallCollisionWithWall(Ball &ball) {

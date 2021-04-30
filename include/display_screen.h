@@ -55,7 +55,7 @@ class DisplayScreen {
    */
   void RemoveBrickFromDisplay(Brick &brick_to_remove);
 
-  bool HasBallCollidedWithSideOfBrick(Ball &ball, Brick &brick);
+  void UpdateForBallCollisionWithBrick(Ball &ball, Brick &brick);
 
   void UpdateForBallCollisionWithWall(Ball &ball);
 };
