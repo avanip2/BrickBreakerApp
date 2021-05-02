@@ -38,6 +38,7 @@ void DisplayScreen::Display() const {
 void DisplayScreen::AdvanceFrame() {
   //loop through the rows in the display
   for (size_t row = 0; row < brick_rows_.size(); row++) {
+    size_t brick_count = 0;
     //loop through the bricks in the row
     for (Brick &brick : brick_rows_[row]) {
       if (brick.GetBottomRightPosition().y >= display_bottom_right_position_.y) {
@@ -48,9 +49,9 @@ void DisplayScreen::AdvanceFrame() {
       //check if a collision has occurred between the ball and the current brick
       UpdateForBrickCollision(ball_, brick);
       if (brick.GetNumHits() == 0) {
-        brick.SetNumHits(10); //placeholder
-        // TODO: figure out how to remove a single brick from the 2d vector
+        DeleteElementFrom2DVector(brick_rows_[row], brick_count);
       }
+      brick_count++;
     }
   }
 

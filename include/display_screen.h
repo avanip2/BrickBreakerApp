@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cinder/gl/gl.h"
+#include "cinder/audio/OutputNode.h"
 #include "brick.h"
 #include "ball.h"
 #include "paddle.h"
