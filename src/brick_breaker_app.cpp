@@ -1,4 +1,5 @@
 #include "brick_breaker_app.h"
+#include "util.h"
 
 namespace brickbreaker {
 

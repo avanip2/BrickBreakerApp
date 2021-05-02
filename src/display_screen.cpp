@@ -150,11 +150,10 @@ void DisplayScreen::UpdateForBallCollisionWithWall(Ball &ball) {
 
   //if the ball has reached the bottom, decrement the number of lives(commented out for purposes of making sure other code works)
   if ((ball.GetPosition().y + ball.GetRadius()) >= display_bottom_right_position_.y && ball.GetVelocity().y > 0) {
-    y_velocity *= -1;
-//    y_velocity = 0;
-//    x_velocity = 0;
-//    num_lives_--;
-//    ball.SetPosition(vec2{display_bottom_right_position_.x / 2, display_bottom_right_position_.y / 2});
+    y_velocity = 0;
+    x_velocity = 0;
+    num_lives_--;
+    ball.SetPosition(vec2{display_bottom_right_position_.x / 2, display_bottom_right_position_.y / 2});
   }
 
   //check if the ball has collided with the side walls and negate the x_velocity accordingly
@@ -170,8 +169,6 @@ void DisplayScreen::UpdateForBallCollisionWithWall(Ball &ball) {
 void DisplayScreen::UpdateForPaddleCollision(Ball &ball) {
   float x_velocity = ball.GetVelocity().x;
   float y_velocity = ball.GetVelocity().y;
-  //vec2 velocity_vector_diff = ball.GetVelocity() - particle_collided_with.GetVelocity();
-  //vec2 position_vector_diff = ball.GetPosition() - particle_collided_with.GetPosition();
 
   if ((ball.GetPosition().y + ball.GetRadius() >= paddle_.GetPaddleTopLeft().y) && y_velocity > 0) {
 
@@ -180,7 +177,6 @@ void DisplayScreen::UpdateForPaddleCollision(Ball &ball) {
         && paddle_.GetPaddleBottomRight().x >= ball.GetPosition().x - ball.GetRadius()) {
       //set velocity and num hits accordingly
       y_velocity *= -1;
-
     }
   }
 
