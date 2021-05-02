@@ -1,3 +1,6 @@
+#include <thread>
+#include <chrono>
+#include "stdafx.h"
 #include "display_screen.h"
 #include "util.h"
 
@@ -27,6 +30,7 @@ void DisplayScreen::Display() const {
       brick.DisplayBrick();
     }
   }
+
 
   //display the ball and paddle
   ball_.DisplayBall();
@@ -184,8 +188,18 @@ void DisplayScreen::UpdateForPaddleCollision(Ball &ball) {
   ball.SetVelocity(vec2{x_velocity, y_velocity});
 }
 
-void DisplayScreen::RemoveBrickFromDisplay(Brick &brick_to_remove) {
-  brick_to_remove.SetColor(ci::Color("black"));
-}
+void DisplayScreen::UpdateBrickPositions() {
+  size_t current_y_position = kMinBrickSize;
 
+  for (size_t row = 0; row < brick_rows_.size(); row++) {
+    for (Brick &brick : brick_rows_[row]) {
+      size_t top_left_y_position = brick.GetTopLeftPosition().y + current_y_position;
+      size_t bottom_right_y_position = brick.GetBottomRightPosition().y + current_y_position;
+      brick.SetTopLeftPosition(vec2{brick.GetTopLeftPosition().x, top_left_y_position});
+      brick.SetBottomRightPosition(vec2{brick.GetBottomRightPosition().x, bottom_right_y_position});
+      current_y_position += kMinBrickSize;
+    }
+  }
+  AddBricksToDisplay(kMinBrickSize);
+}
 } //namespace brickbreaker

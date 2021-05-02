@@ -57,11 +57,6 @@ class DisplayScreen {
    */
   void AddBricksToDisplay(size_t y_position);
 
-  /**
-   * helper method to remove bricks from the display(unimplemented)
-   * @param brick_to_remove brick to remove
-   */
-  void RemoveBrickFromDisplay(Brick &brick_to_remove);
 
   /**
    * determine if a collision with the entered brick and ball has occurred and update velocities and hits
@@ -77,5 +72,7 @@ class DisplayScreen {
   void UpdateForBallCollisionWithWall(Ball &ball);
 
   void UpdateForPaddleCollision(Ball &ball);
+
+  void UpdateBrickPositions();
 };
 } //namespace brickbreaker
