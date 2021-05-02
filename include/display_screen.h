@@ -74,5 +74,7 @@ class DisplayScreen {
    * @param ball display ball
    */
   void UpdateForBallCollisionWithWall(Ball &ball);
+
+  void UpdateForPaddleCollision(Ball &ball);
 };
 } //namespace brickbreaker

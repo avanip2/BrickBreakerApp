@@ -36,6 +36,8 @@ class Paddle {
 
   void SetChangeInX(int set_change_in_x);
 
+  int GetChangeInX();
+
  private:
   //member variables of the paddle class(attributes of a paddle)
   vec2 paddle_top_left_;

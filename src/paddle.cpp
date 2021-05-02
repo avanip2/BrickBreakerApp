@@ -45,6 +45,10 @@ void Paddle::SetChangeInX(int set_change_in_x) {
   change_in_x_ = set_change_in_x;
 }
 
+int Paddle::GetChangeInX() {
+  return change_in_x_;
+}
+
 void Paddle::MovePaddle() {
   //initialize the x positions of the paddle as that is the only thing that can change
   size_t curr_paddle_top_left_x = paddle_top_left_.x;
