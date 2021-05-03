@@ -14,7 +14,9 @@ BrickBreakerApp::BrickBreakerApp() :
 void BrickBreakerApp::draw() {
   ci::Color background_color("black");
   ci::gl::clear(background_color);
-
+  std::string intro_label = "Welcome to BrickBreaker! Press space to move the ball";
+  ci::gl::color(ci::Color("white"));
+  ci::gl::drawStringCentered(intro_label, vec2{1050,100});
   //display all components on the screen
   display_.Display();
 }
@@ -57,13 +59,13 @@ void BrickBreakerApp::LoadAudioFiles() {
 }
 
 void BrickBreakerApp::PlayBrickSoundFX() {
-  brick_collision_ ->start();
   brick_collision_ ->stop();
+  brick_collision_ ->start();
 }
 
 void BrickBreakerApp::PlayPaddleSoundFX() {
-  paddle_collision_ ->start();
   paddle_collision_ ->stop();
+  paddle_collision_ ->start();
 }
 
 }  // namespace brickbreaker

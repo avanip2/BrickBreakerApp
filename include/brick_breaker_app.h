@@ -40,8 +40,8 @@ class BrickBreakerApp : public ci::app::App {
   const int kWindowSize = 1250;
   const int kMargin = 100;
   const int kPaddleChange = 20;
-  constexpr static int kBallXVelocity = -4;
-  constexpr static int kBallYVelocity = -5;
+  constexpr static int kBallXVelocity = -5;
+  constexpr static int kBallYVelocity = -6;
   ci::audio::VoiceRef brick_collision_;
   ci::audio::VoiceRef paddle_collision_;
 
