@@ -113,3 +113,41 @@ TEST_CASE("ball does not collide with wall") {
     REQUIRE(ball.GetVelocity().y == -5);
   }
 }
+
+TEST_CASE("ball collides with brick") {
+  DisplayScreen test_screen(vec2{0,0}, vec2{400,400});
+  Ball ball(vec2{0,0}, vec2{0,0}, 10, ci::Color("blue"));
+  Brick brick(5, vec2{100, 50}, vec2{150, 100}, ci::Color("red"), 50);
+
+  SECTION("ball collides with the right side of a brick") {
+    ball.SetPosition(vec2{160, 75});
+    ball.SetVelocity(vec2{-5, 4});
+    test_screen.UpdateForBrickCollision(ball, brick);
+    REQUIRE(ball.GetVelocity().x == 5);
+    REQUIRE(ball.GetVelocity().y == -4);
+  }
+
+  SECTION("ball collides with the left side of the brick") {
+    ball.SetPosition(vec2{90, 75});
+    ball.SetVelocity(vec2{5,4});
+    test_screen.UpdateForBrickCollision(ball, brick);
+    REQUIRE(ball.GetVelocity().x == -5);
+    REQUIRE(ball.GetVelocity().y == -4);
+  }
+
+  SECTION("ball collides with the bottom of the brick") {
+    ball.SetPosition(vec2{125, 110});
+    ball.SetVelocity(vec2{4, -5});
+    test_screen.UpdateForBrickCollision(ball, brick);
+    REQUIRE(ball.GetVelocity().x == -4);
+    REQUIRE(ball.GetVelocity().y == 5);
+  }
+
+  SECTION("ball collides with the top of the brick") {
+    ball.SetPosition(vec2{125, 40});
+    ball.SetVelocity(vec2{4, 5});
+    test_screen.UpdateForBrickCollision(ball, brick);
+    REQUIRE(ball.GetVelocity().x == -4);
+    REQUIRE(ball.GetVelocity().y == -5);
+  }
+}
