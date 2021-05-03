@@ -37,13 +37,16 @@ class DisplayScreen {
 
   size_t GetNumLives() const;
 
+  bool is_brick_collision_;
+
+  bool is_paddle_collision_;
+
  private:
   //member variables of display
   vec2 display_top_left_position_;
   vec2 display_bottom_right_position_;
   std::vector<std::vector<Brick>> brick_rows_;
   size_t num_lives_;
- private:
 
   //constants for drawing and randomizing objects in the display
   constexpr static size_t kNumberOfBricksPerRow = 9;
@@ -85,5 +88,6 @@ class DisplayScreen {
    * @param paddle the paddle in the display
    */
   void UpdateForPaddleCollision(Ball &ball, Paddle &paddle);
+
 };
 } //namespace brickbreaker

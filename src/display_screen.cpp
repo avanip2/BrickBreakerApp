@@ -1,7 +1,8 @@
-#include <thread>
 #include <chrono>
+#include <cinder/audio/Voice.h>
 #include "display_screen.h"
 #include "util.h"
+#include "brick_breaker_app.h"
 
 namespace brickbreaker {
 
@@ -135,6 +136,7 @@ void DisplayScreen::UpdateForBrickCollision(Ball &ball, Brick &brick) {
     }
     x_velocity *= -1;
     y_velocity *= -1;
+    is_brick_collision_ = true;
   }
   //set the attributes of the ball and brick based on changes in if statements
   ball.SetVelocity(vec2{x_velocity, y_velocity});
@@ -180,6 +182,7 @@ void DisplayScreen::UpdateForPaddleCollision(Ball &ball, Paddle &paddle) {
         && paddle.GetPaddleBottomRight().x >= ball.GetPosition().x - ball.GetRadius()) {
       //set velocity and num hits accordingly
       y_velocity *= -1;
+      is_paddle_collision_ = true;
     }
   }
 
@@ -200,9 +203,11 @@ void DisplayScreen::UpdateBrickPositions() {
   }
   AddBricksToDisplay(kMinBrickSize);
 }
+
 const std::vector<std::vector<Brick>> &DisplayScreen::GetBrickRows() const {
   return brick_rows_;
 }
+
 size_t DisplayScreen::GetNumLives() const {
   return num_lives_;
 }
