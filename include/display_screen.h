@@ -37,6 +37,8 @@ class DisplayScreen {
 
   size_t GetNumLives() const;
 
+  int GetSeconds();
+
   bool is_brick_collision_;
 
   bool is_paddle_collision_;
@@ -47,6 +49,12 @@ class DisplayScreen {
   vec2 display_bottom_right_position_;
   std::vector<std::vector<Brick>> brick_rows_;
   size_t num_lives_;
+  bool has_game_ended_;
+  int calls_to_advance_;
+  time_t start_time_ = std::time(NULL);
+  int seconds_ = 0;
+
+ private:
 
   //constants for drawing and randomizing objects in the display
   constexpr static size_t kNumberOfBricksPerRow = 9;

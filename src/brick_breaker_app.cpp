@@ -8,7 +8,7 @@ namespace brickbreaker {
 BrickBreakerApp::BrickBreakerApp() :
     display_(vec2{0,0}, vec2{900,900}) {
   ci::app::setWindowSize(kWindowSize, kWindowSize);
-  LoadAudioFiles();
+  //LoadAudioFiles();
 }
 
 void BrickBreakerApp::draw() {
@@ -23,12 +23,6 @@ void BrickBreakerApp::draw() {
 
 void BrickBreakerApp::update() {
   display_.AdvanceFrame();
-  if (display_.is_brick_collision_) {
-    PlayBrickSoundFX();
-  }
-  if (display_.is_paddle_collision_) {
-    PlayPaddleSoundFX();
-  }
 }
 
 void BrickBreakerApp::keyDown(ci::app::KeyEvent event) {

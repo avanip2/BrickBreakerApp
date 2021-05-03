@@ -2,7 +2,6 @@
 #include <cinder/audio/Voice.h>
 #include "display_screen.h"
 #include "util.h"
-#include "brick_breaker_app.h"
 
 namespace brickbreaker {
 
@@ -19,6 +18,7 @@ DisplayScreen::DisplayScreen(vec2 set_display_top_left_position, vec2 set_displa
   paddle_ = Paddle(vec2{kPaddleLocation, display_bottom_right_position_.x - kPaddleSize},
                    vec2{kPaddleLocation + kPaddleLength, display_bottom_right_position_.x}, ci::Color("gray"));
   num_lives_ = 3;
+  calls_to_advance_ = 0;
 }
 
 void DisplayScreen::Display() const {
@@ -39,6 +39,10 @@ void DisplayScreen::Display() const {
 }
 
 void DisplayScreen::AdvanceFrame() {
+  calls_to_advance_++;
+  if (brick_rows_.empty()) {
+    has_game_ended_ = true;
+  }
   //loop through the rows in the display
   for (size_t row = 0; row < brick_rows_.size(); row++) {
     size_t brick_count = 0;
@@ -47,6 +51,7 @@ void DisplayScreen::AdvanceFrame() {
       if (brick.GetBottomRightPosition().y >= display_bottom_right_position_.y) {
         //remove all bricks from the display if a row has reached the bottom
         brick_rows_.clear();
+        has_game_ended_ = true;
       }
 
       //check if a collision has occurred between the ball and the current brick
@@ -58,10 +63,17 @@ void DisplayScreen::AdvanceFrame() {
     }
   }
 
-  // TODO: figure out how to use a sleep timer to add new bricks periodically
+  if (calls_to_advance_ == 3600) {
+    UpdateBrickPositions();
+    calls_to_advance_ = 0;
+  }
 
   //check if the number of lives is 0 and set the ball's position and velocity accordingly
   if (num_lives_ == 0) {
+    has_game_ended_ = true;
+  }
+
+  if (has_game_ended_) {
     ball_.SetVelocity(vec2{0,0});
     ball_.SetPosition(vec2{display_bottom_right_position_.x / 2, display_bottom_right_position_.y / 2});
   }
@@ -192,14 +204,14 @@ void DisplayScreen::UpdateForPaddleCollision(Ball &ball, Paddle &paddle) {
 void DisplayScreen::UpdateBrickPositions() {
   size_t current_y_position = kMinBrickSize;
 
-  for (size_t row = 0; row < brick_rows_.size(); row++) {
+  for (int row = brick_rows_.size() - 1; row >= 0; row--) {
     for (Brick &brick : brick_rows_[row]) {
       size_t top_left_y_position = brick.GetTopLeftPosition().y + current_y_position;
       size_t bottom_right_y_position = brick.GetBottomRightPosition().y + current_y_position;
       brick.SetTopLeftPosition(vec2{brick.GetTopLeftPosition().x, top_left_y_position});
       brick.SetBottomRightPosition(vec2{brick.GetBottomRightPosition().x, bottom_right_y_position});
-      current_y_position += kMinBrickSize;
     }
+    current_y_position += kMinBrickSize;
   }
   AddBricksToDisplay(kMinBrickSize);
 }
@@ -210,5 +222,15 @@ const std::vector<std::vector<Brick>> &DisplayScreen::GetBrickRows() const {
 
 size_t DisplayScreen::GetNumLives() const {
   return num_lives_;
+}
+
+int DisplayScreen::GetSeconds() {
+  //https://www.programiz.com/cpp-programming/library-function/ctime/time
+  if (!(has_game_ended_)) {
+    time_t current_time = std::time(NULL);
+    int seconds_passed = std::difftime(current_time, start_time_);
+    seconds_ = seconds_passed % 60;
+  }
+  return seconds_;
 }
 } //namespace brickbreaker
