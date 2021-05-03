@@ -253,3 +253,41 @@ TEST_CASE("ball does not collide brick") {
     REQUIRE(ball.GetVelocity().y == 5);
   }
 }
+
+TEST_CASE("ball collisions with paddle") {
+  DisplayScreen test_screen(vec2{0,0}, vec2{400,400});
+  Ball ball(vec2{0,0}, vec2{0,0}, 10, ci::Color("blue"));
+  Paddle paddle(vec2{200, 380}, vec2{250, 400}, ci::Color("gray"));
+
+  SECTION("ball collides with top of the paddle") {
+    ball.SetPosition(vec2{225, 370});
+    ball.SetVelocity(vec2{4,5});
+    test_screen.UpdateForPaddleCollision(ball, paddle);
+    REQUIRE(ball.GetVelocity().x == 4);
+    REQUIRE(ball.GetVelocity().y == -5);
+  }
+
+  SECTION("ball does not collide with top of the paddle because of x position") {
+    ball.SetPosition(vec2{0, 370});
+    ball.SetVelocity(vec2{4,5});
+    test_screen.UpdateForPaddleCollision(ball, paddle);
+    REQUIRE(ball.GetVelocity().x == 4);
+    REQUIRE(ball.GetVelocity().y == 5);
+  }
+
+  SECTION("ball does not collide with the top of the paddle because of y position") {
+    ball.SetPosition(vec2{225, 365});
+    ball.SetVelocity(vec2{4,5});
+    test_screen.UpdateForPaddleCollision(ball, paddle);
+    REQUIRE(ball.GetVelocity().x == 4);
+    REQUIRE(ball.GetVelocity().y == 5);
+  }
+
+  SECTION("ball does not collide with the top of the paddle because of velocity") {
+    ball.SetPosition(vec2{225, 370});
+    ball.SetVelocity(vec2{4, -5});
+    test_screen.UpdateForPaddleCollision(ball, paddle);
+    REQUIRE(ball.GetVelocity().x == 4);
+    REQUIRE(ball.GetVelocity().y == -5);
+  }
+}
