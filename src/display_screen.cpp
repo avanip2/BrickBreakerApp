@@ -1,6 +1,5 @@
 #include <thread>
 #include <chrono>
-#include "stdafx.h"
 #include "display_screen.h"
 #include "util.h"
 
@@ -30,7 +29,6 @@ void DisplayScreen::Display() const {
       brick.DisplayBrick();
     }
   }
-
 
   //display the ball and paddle
   ball_.DisplayBall();
@@ -68,7 +66,7 @@ void DisplayScreen::AdvanceFrame() {
   }
 
   //check for ball collision with the wall and update the position of the ball
-  UpdateForPaddleCollision(ball_);
+  UpdateForPaddleCollision(ball_, paddle_);
   UpdateForBallCollisionWithWall(ball_);
   ball_.UpdatePosition();
 }
@@ -171,15 +169,15 @@ void DisplayScreen::UpdateForBallCollisionWithWall(Ball &ball) {
   ball.SetVelocity(vec2{x_velocity, y_velocity});
 }
 
-void DisplayScreen::UpdateForPaddleCollision(Ball &ball) {
+void DisplayScreen::UpdateForPaddleCollision(Ball &ball, Paddle &paddle) {
   float x_velocity = ball.GetVelocity().x;
   float y_velocity = ball.GetVelocity().y;
 
-  if ((ball.GetPosition().y + ball.GetRadius() >= paddle_.GetPaddleTopLeft().y) && y_velocity > 0) {
+  if ((ball.GetPosition().y + ball.GetRadius() >= paddle.GetPaddleTopLeft().y) && y_velocity > 0) {
 
     //check if the x position of the ball matches that of a brick
-    if (paddle_.GetPaddleTopLeft().x <= ball.GetPosition().x + ball.GetRadius()
-        && paddle_.GetPaddleBottomRight().x >= ball.GetPosition().x - ball.GetRadius()) {
+    if (paddle.GetPaddleTopLeft().x <= ball.GetPosition().x + ball.GetRadius()
+        && paddle.GetPaddleBottomRight().x >= ball.GetPosition().x - ball.GetRadius()) {
       //set velocity and num hits accordingly
       y_velocity *= -1;
     }
@@ -201,5 +199,11 @@ void DisplayScreen::UpdateBrickPositions() {
     }
   }
   AddBricksToDisplay(kMinBrickSize);
+}
+const std::vector<std::vector<Brick>> &DisplayScreen::GetBrickRows() const {
+  return brick_rows_;
+}
+size_t DisplayScreen::GetNumLives() const {
+  return num_lives_;
 }
 } //namespace brickbreaker

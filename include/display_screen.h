@@ -33,12 +33,17 @@ class DisplayScreen {
 
   Ball ball_;
 
+  const std::vector<std::vector<Brick>> &GetBrickRows() const;
+
+  size_t GetNumLives() const;
+
  private:
   //member variables of display
   vec2 display_top_left_position_;
   vec2 display_bottom_right_position_;
   std::vector<std::vector<Brick>> brick_rows_;
   size_t num_lives_;
+ private:
 
   //constants for drawing and randomizing objects in the display
   constexpr static size_t kNumberOfBricksPerRow = 9;
@@ -51,13 +56,16 @@ class DisplayScreen {
   constexpr static size_t kPaddleLocation = 400;
   constexpr static size_t kPaddleSize = 20;
   constexpr static size_t kPaddleLength = 150;
+  constexpr static size_t kBrickInterval = 60000;
 
   /**
-   * helper method to create and add bricks to the display
-   */
+ * helper method to create and add bricks to the display
+ */
   void AddBricksToDisplay(size_t y_position);
 
+  void UpdateBrickPositions();
 
+ public:
   /**
    * determine if a collision with the entered brick and ball has occurred and update velocities and hits
    * @param ball display ball
@@ -71,8 +79,11 @@ class DisplayScreen {
    */
   void UpdateForBallCollisionWithWall(Ball &ball);
 
-  void UpdateForPaddleCollision(Ball &ball);
-
-  void UpdateBrickPositions();
+  /**
+   * determine if a collision between the ball and the paddle has occurred
+   * @param ball the ball in the display
+   * @param paddle the paddle in the display
+   */
+  void UpdateForPaddleCollision(Ball &ball, Paddle &paddle);
 };
 } //namespace brickbreaker
