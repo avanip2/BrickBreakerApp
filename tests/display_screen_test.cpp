@@ -151,3 +151,105 @@ TEST_CASE("ball collides with brick") {
     REQUIRE(ball.GetVelocity().y == -5);
   }
 }
+
+TEST_CASE("ball does not collide brick") {
+  DisplayScreen test_screen(vec2{0,0}, vec2{400,400});
+  Ball ball(vec2{0,0}, vec2{0,0}, 10, ci::Color("blue"));
+  Brick brick(5, vec2{100, 50}, vec2{150, 100}, ci::Color("red"), 50);
+
+  SECTION("ball does not collide with right side of brick because of x position") {
+    ball.SetPosition(vec2{165, 75});
+    ball.SetVelocity(vec2{-5, 4});
+    test_screen.UpdateForBrickCollision(ball, brick);
+    REQUIRE(ball.GetVelocity().x == -5);
+    REQUIRE(ball.GetVelocity().y == 4);
+  }
+
+  SECTION("ball does not collide with right side of brick because of y position") {
+    ball.SetPosition(vec2{160, 45});
+    ball.SetVelocity(vec2{-5,4});
+    test_screen.UpdateForBrickCollision(ball, brick);
+    REQUIRE(ball.GetVelocity().x == -5);
+    REQUIRE(ball.GetVelocity().y == 4);
+  }
+
+  SECTION("ball does not collide with right of brick because of velocity") {
+    ball.SetPosition(vec2{160, 75});
+    ball.SetVelocity(vec2{5,4});
+    test_screen.UpdateForBrickCollision(ball, brick);
+    REQUIRE(ball.GetVelocity().x == 5);
+    REQUIRE(ball.GetVelocity().y == 4);
+  }
+
+  SECTION("ball does not collide with left of brick because of x position") {
+    ball.SetPosition(vec2{85, 75});
+    ball.SetVelocity(vec2{5,4});
+    test_screen.UpdateForBrickCollision(ball, brick);
+    REQUIRE(ball.GetVelocity().x == 5);
+    REQUIRE(ball.GetVelocity().y == 4);
+  }
+
+  SECTION("ball does not collide with left side of brick because of y position") {
+    ball.SetPosition(vec2{160, 45});
+    ball.SetVelocity(vec2{5,4});
+    test_screen.UpdateForBrickCollision(ball, brick);
+    REQUIRE(ball.GetVelocity().x == 5);
+    REQUIRE(ball.GetVelocity().y == 4);
+  }
+
+  SECTION("ball does not collide with left of brick because of velocity") {
+    ball.SetPosition(vec2{160, 75});
+    ball.SetVelocity(vec2{-5,4});
+    test_screen.UpdateForBrickCollision(ball, brick);
+    REQUIRE(ball.GetVelocity().x == -5);
+    REQUIRE(ball.GetVelocity().y == 4);
+  }
+
+  SECTION("ball does not collide with bottom of brick because of x position") {
+    ball.SetPosition(vec2{90, 160});
+    ball.SetVelocity(vec2{4, -5});
+    test_screen.UpdateForBrickCollision(ball, brick);
+    REQUIRE(ball.GetVelocity().x == 4);
+    REQUIRE(ball.GetVelocity().y == -5);
+  }
+
+  SECTION("ball does not collide with the bottom of brick because of y position") {
+    ball.SetPosition(vec2{125, 165});
+    ball.SetVelocity(vec2{4, -5});
+    test_screen.UpdateForBrickCollision(ball, brick);
+    REQUIRE(ball.GetVelocity().x == 4);
+    REQUIRE(ball.GetVelocity().y == -5);
+  }
+
+  SECTION("ball does not collide with the bottom of brick because of velocity") {
+    ball.SetPosition(vec2{125, 110});
+    ball.SetVelocity(vec2{4, 5});
+    test_screen.UpdateForBrickCollision(ball, brick);
+    REQUIRE(ball.GetVelocity().x == 4);
+    REQUIRE(ball.GetVelocity().y == 5);
+  }
+
+  SECTION("ball does not collide with top of brick because of x position") {
+    ball.SetPosition(vec2{90, 40});
+    ball.SetVelocity(vec2{4, 5});
+    test_screen.UpdateForBrickCollision(ball, brick);
+    REQUIRE(ball.GetVelocity().x == 4);
+    REQUIRE(ball.GetVelocity().y == 5);
+  }
+
+  SECTION("ball does not collide with the top of brick because of y position") {
+    ball.SetPosition(vec2{125, 35});
+    ball.SetVelocity(vec2{4, 5});
+    test_screen.UpdateForBrickCollision(ball, brick);
+    REQUIRE(ball.GetVelocity().x == 4);
+    REQUIRE(ball.GetVelocity().y == 5);
+  }
+
+  SECTION("ball does not collide with the top of brick because of velocity") {
+    ball.SetPosition(vec2{125, 40});
+    ball.SetVelocity(vec2{4, 5});
+    test_screen.UpdateForBrickCollision(ball, brick);
+    REQUIRE(ball.GetVelocity().x == 4);
+    REQUIRE(ball.GetVelocity().y == 5);
+  }
+}
