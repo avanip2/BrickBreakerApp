@@ -63,7 +63,7 @@ void DisplayScreen::AdvanceFrame() {
     }
   }
 
-  if (calls_to_advance_ == 3600) {
+  if (calls_to_advance_ == 1800) {
     UpdateBrickPositions();
     calls_to_advance_ = 0;
   }
@@ -211,7 +211,6 @@ void DisplayScreen::UpdateBrickPositions() {
       brick.SetTopLeftPosition(vec2{brick.GetTopLeftPosition().x, top_left_y_position});
       brick.SetBottomRightPosition(vec2{brick.GetBottomRightPosition().x, bottom_right_y_position});
     }
-    current_y_position += kMinBrickSize;
   }
   AddBricksToDisplay(kMinBrickSize);
 }
@@ -224,13 +223,4 @@ size_t DisplayScreen::GetNumLives() const {
   return num_lives_;
 }
 
-int DisplayScreen::GetSeconds() {
-  //https://www.programiz.com/cpp-programming/library-function/ctime/time
-  if (!(has_game_ended_)) {
-    time_t current_time = std::time(NULL);
-    int seconds_passed = std::difftime(current_time, start_time_);
-    seconds_ = seconds_passed % 60;
-  }
-  return seconds_;
-}
 } //namespace brickbreaker

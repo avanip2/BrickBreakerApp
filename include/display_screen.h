@@ -51,8 +51,6 @@ class DisplayScreen {
   size_t num_lives_;
   bool has_game_ended_;
   int calls_to_advance_;
-  time_t start_time_ = std::time(NULL);
-  int seconds_ = 0;
 
  private:
 
@@ -67,7 +65,6 @@ class DisplayScreen {
   constexpr static size_t kPaddleLocation = 400;
   constexpr static size_t kPaddleSize = 20;
   constexpr static size_t kPaddleLength = 150;
-  constexpr static size_t kBrickInterval = 60000;
 
   /**
  * helper method to create and add bricks to the display
