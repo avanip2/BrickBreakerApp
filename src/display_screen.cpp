@@ -21,6 +21,7 @@ DisplayScreen::DisplayScreen(vec2 set_display_top_left_position, vec2 set_displa
   //set state about the game cycle
   num_lives_ = 3;
   calls_to_advance_ = 0;
+  calls_to_adance_for_ball_ = 0;
   current_score_ = 0;
 }
 
@@ -28,6 +29,7 @@ void DisplayScreen::Reset() {
   //reset state about gameplay
   num_lives_ = 3;
   calls_to_advance_ = 0;
+  calls_to_adance_for_ball_ = 0;
   current_score_ = 0;
   has_game_ended_ = false;
   brick_rows_.clear();
@@ -74,6 +76,7 @@ void DisplayScreen::Display() const {
 void DisplayScreen::AdvanceFrame() {
   //increment the number of calls to update to maintain for determining length of program running
   calls_to_advance_++;
+  calls_to_adance_for_ball_++;
 
   //if all bricks have been destroyed, the game has ended
   if (brick_rows_.empty()) {
@@ -107,6 +110,31 @@ void DisplayScreen::AdvanceFrame() {
   if (calls_to_advance_ == 3600) {
     UpdateBrickPositions();
     calls_to_advance_ = 0;
+  }
+
+  //if 4 minutes have passed, increase the velocity of the ball
+  if (calls_to_adance_for_ball_ == 7200) {
+    //set initial velocity variables for x and y
+    int x_velocity = ball_.GetVelocity().x;
+    int y_velocity = ball_.GetVelocity().y;
+
+    //if the x velocity is negative, making it more negative will make it go faster and vice versa for positive
+    if (x_velocity < 0) {
+      x_velocity--;
+    } else {
+      x_velocity++;
+    }
+
+    //if the y velocity is negative, making it more negative will make it go faster and vice versa for positive
+    if (y_velocity < 0) {
+      y_velocity--;
+    } else {
+      y_velocity++;
+    }
+
+    //set the ball's velocity and reset calls to advance back to 0
+    ball_.SetVelocity(vec2{x_velocity,y_velocity});
+    calls_to_adance_for_ball_ = 0;
   }
 
   //the game has ended if the player has no more lives

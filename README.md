@@ -12,6 +12,7 @@ simply destroying all the brick. The player receives a score based on how many t
 at a velocity when the space bar is pressed and keep moving unless the player lets the ball hit the bottom of the gameplay
 screen to lose a life. If the player loses three lives, they can reset the game and play again with a single row of new bricks 
 appearing at the top of the gameplay screen. The player will be able to control the paddle using the left and right keys on the keyboard.
+After 4 minutes have passed, the ball will get faster and faster to add another element of excitement to the game.
 
 ### Controls
 | Key       | Action                                                      |
