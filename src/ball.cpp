@@ -22,14 +22,6 @@ void Ball::UpdatePosition() {
   position_ += velocity_;
 }
 
-void Ball::SetColor(ci::Color set_color) {
-  color_ = set_color;
-}
-
-ci::Color Ball::GetColor() {
-  return color_;
-}
-
 void Ball::SetVelocity(vec2 set_velocity) {
   velocity_ = set_velocity;
 }
@@ -44,10 +36,6 @@ void Ball::SetPosition(vec2 set_position) {
 
 vec2 Ball::GetPosition() {
   return position_;
-}
-
-void Ball::SetRadius(float set_radius) {
-  radius_ = set_radius;
 }
 
 float Ball::GetRadius() {

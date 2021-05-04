@@ -63,7 +63,7 @@ void DisplayScreen::AdvanceFrame() {
     }
   }
 
-  if (calls_to_advance_ == 1800) {
+  if (calls_to_advance_ == 3600) {
     UpdateBrickPositions();
     calls_to_advance_ = 0;
   }
@@ -213,10 +213,6 @@ void DisplayScreen::UpdateBrickPositions() {
     }
   }
   AddBricksToDisplay(kMinBrickSize);
-}
-
-const std::vector<std::vector<Brick>> &DisplayScreen::GetBrickRows() const {
-  return brick_rows_;
 }
 
 size_t DisplayScreen::GetNumLives() const {

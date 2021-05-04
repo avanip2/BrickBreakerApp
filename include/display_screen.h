@@ -29,15 +29,31 @@ class DisplayScreen {
    */
   void AdvanceFrame();
 
+  /**
+ * determine if a collision with the entered brick and ball has occurred and update velocities and hits
+ * @param ball display ball
+ * @param brick specific brick in the row
+ */
+  void UpdateForBrickCollision(Ball &ball, Brick &brick);
+
+  /**
+   * determine if a collision between the ball and the wall has occurred
+   * @param ball display ball
+   */
+  void UpdateForBallCollisionWithWall(Ball &ball);
+
+  /**
+   * determine if a collision between the ball and the paddle has occurred
+   * @param ball the ball in the display
+   * @param paddle the paddle in the display
+   */
+  void UpdateForPaddleCollision(Ball &ball, Paddle &paddle);
+
   Paddle paddle_;
 
   Ball ball_;
 
-  const std::vector<std::vector<Brick>> &GetBrickRows() const;
-
   size_t GetNumLives() const;
-
-  int GetSeconds();
 
   bool is_brick_collision_;
 
@@ -51,8 +67,6 @@ class DisplayScreen {
   size_t num_lives_;
   bool has_game_ended_;
   int calls_to_advance_;
-
- private:
 
   //constants for drawing and randomizing objects in the display
   constexpr static size_t kNumberOfBricksPerRow = 9;
@@ -72,27 +86,6 @@ class DisplayScreen {
   void AddBricksToDisplay(size_t y_position);
 
   void UpdateBrickPositions();
-
- public:
-  /**
-   * determine if a collision with the entered brick and ball has occurred and update velocities and hits
-   * @param ball display ball
-   * @param brick specific brick in the row
-   */
-  void UpdateForBrickCollision(Ball &ball, Brick &brick);
-
-  /**
-   * determine if a collision between the ball and the wall has occurred
-   * @param ball display ball
-   */
-  void UpdateForBallCollisionWithWall(Ball &ball);
-
-  /**
-   * determine if a collision between the ball and the paddle has occurred
-   * @param ball the ball in the display
-   * @param paddle the paddle in the display
-   */
-  void UpdateForPaddleCollision(Ball &ball, Paddle &paddle);
 
 };
 } //namespace brickbreaker
