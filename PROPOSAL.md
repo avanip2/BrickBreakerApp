@@ -23,16 +23,16 @@ of the project, I will create properties of the particle and write the method to
 particles with the bricks. This will require updating properties of the brick as well, ensuring that the number 
 of hits required to break each brick also decreases and this change is properly displayed on the screen. During 
 the final week of the project, I will work on getting the sliding platform to move and properly execute its collisions 
-with the ball as well. Additionally, I will also try to implement some sort of sound effects every time the ball collides 
-with the sliding platform and the brick to make the game a little more interesting for the player.
+with the ball as well.
 
 If there is extra time after I complete all the implementations mentioned above, I will work to implement
 the addition of another ball in the game if the game continues for a certain amount of time to make it more
-challenging for the player. This will likely require me to create a vector to store all the balls that are
-added to the screen before the game ends. Another implementation I can add if I have extra time after completing
-the other things mentioned above, I can also look into a way to make the ball's minimum and maximum possible
-velocities increase if the game continues for a certain amount of time to add another element of challenge for
-the player and help the game end quicker. I have chosen to do this game because I really like
-the swipe brick breaker game and I wanted to put a new twist to it with the continuous movement of the ball and
-randomization of brick size in a row. I hope to be able to utilize all the skills I have learned in this class
-to make something f****un for myself and others to play!
+challenging for the player. Additionally, I will also try to implement some sort of sound effects every time the ball collides
+with the sliding platform and the brick to make the game a little more interesting for the player.
+This will likely require me to create a vector to store all the balls that are added to the screen before the game ends.
+Another implementation I can add if I have extra time after completing the other things mentioned above,
+I can also look into a way to make the ball's minimum and maximum possible velocities increase if the game continues 
+for a certain amount of time to add another element of challenge for the player and help the game end quicker. 
+I have chosen to do this game because I really like the swipe brick breaker game and I wanted to put a new twist to it 
+with the continuous movement of the ball and randomization of brick size in a row. 
+I hope to be able to utilize all the skills I have learned in this class to make something fun for myself and others to play!

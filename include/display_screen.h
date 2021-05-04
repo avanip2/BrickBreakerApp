@@ -82,6 +82,7 @@ class DisplayScreen {
   constexpr static size_t kPaddleLocation = 400;
   constexpr static size_t kPaddleSize = 20;
   constexpr static size_t kPaddleLength = 150;
+  constexpr static size_t kBrickHeight = 50;
 
   /**
  * helper method to create and add bricks to the display

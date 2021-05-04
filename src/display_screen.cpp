@@ -12,7 +12,7 @@ DisplayScreen::DisplayScreen(vec2 set_display_top_left_position, vec2 set_displa
   display_bottom_right_position_ = set_display_bottom_right_position;
 
   //add bricks, ball and paddle to the display by initializing them here
-  AddBricksToDisplay(kMinBrickSize);
+  AddBricksToDisplay(kBrickHeight);
   ball_ = Ball(vec2{display_bottom_right_position_.x / 2, display_bottom_right_position_.y / 2},
                vec2{0,0}, kBallSize,ci::Color("red"));
   paddle_ = Paddle(vec2{kPaddleLocation, display_bottom_right_position_.x - kPaddleSize},
@@ -25,19 +25,19 @@ DisplayScreen::DisplayScreen(vec2 set_display_top_left_position, vec2 set_displa
 }
 
 void DisplayScreen::Reset() {
+  //reset state about gameplay
   num_lives_ = 3;
   calls_to_advance_ = 0;
   current_score_ = 0;
+  has_game_ended_ = false;
   brick_rows_.clear();
 
   //add bricks, ball and paddle to the display by initializing them here
-  AddBricksToDisplay(kMinBrickSize);
+  AddBricksToDisplay(kBrickHeight);
   ball_ = Ball(vec2{display_bottom_right_position_.x / 2, display_bottom_right_position_.y / 2},
                vec2{0,0}, kBallSize,ci::Color("red"));
   paddle_ = Paddle(vec2{kPaddleLocation, display_bottom_right_position_.x - kPaddleSize},
                    vec2{kPaddleLocation + kPaddleLength, display_bottom_right_position_.x}, ci::Color("gray"));
-
-  has_game_ended_ = false;
 }
 
 void DisplayScreen::Display() const {
@@ -51,8 +51,8 @@ void DisplayScreen::Display() const {
   }
 
   //create string labels to print on the screen for score and lives
-  std::string score_label = "score: " + std::to_string(current_score_);
-  std::string lives_label = "lives: " + std::to_string(num_lives_);
+  std::string score_label = "Score: " + std::to_string(current_score_);
+  std::string lives_label = "Lives: " + std::to_string(num_lives_);
 
   //display the ball and paddle
   ball_.DisplayBall();
@@ -72,10 +72,14 @@ void DisplayScreen::Display() const {
 }
 
 void DisplayScreen::AdvanceFrame() {
+  //increment the number of calls to update to maintain for determining length of program running
   calls_to_advance_++;
+
+  //if all bricks have been destroyed, the game has ended
   if (brick_rows_.empty()) {
     has_game_ended_ = true;
   }
+
   //loop through the rows in the display
   for (size_t row = 0; row < brick_rows_.size(); row++) {
     size_t brick_count = 0;
@@ -89,23 +93,28 @@ void DisplayScreen::AdvanceFrame() {
 
       //check if a collision has occurred between the ball and the current brick
       UpdateForBrickCollision(ball_, brick);
+
+      //determine if the brick has no hits and remove it from the 2d vector if it does
       if (brick.GetNumHits() == 0) {
         DeleteElementFrom2DVector(brick_rows_[row], brick_count);
       }
+      //increment count of bricks
       brick_count++;
     }
   }
 
+  //if 2 minutes have passed, add more bricks to the display and reset counter for calls to advance back to 0
   if (calls_to_advance_ == 3600) {
     UpdateBrickPositions();
     calls_to_advance_ = 0;
   }
 
-  //check if the number of lives is 0 and set the ball's position and velocity accordingly
+  //the game has ended if the player has no more lives
   if (num_lives_ == 0) {
     has_game_ended_ = true;
   }
 
+  //if the game has ended, reset the position and velocity of the ball
   if (has_game_ended_) {
     ball_.SetVelocity(vec2{0,0});
     ball_.SetPosition(vec2{display_bottom_right_position_.x / 2, display_bottom_right_position_.y / 2});
@@ -131,7 +140,7 @@ void DisplayScreen::AddBricksToDisplay(size_t y_position) {
 
     //create new brick using randomly generated attributes and the position of each brick
     Brick new_brick(num_hits, vec2{current_brick_position, y_position},
-                    vec2{current_brick_position + brick_size, y_position + kMinBrickSize},
+                    vec2{current_brick_position + brick_size, y_position + kBrickHeight},
                     ci::Color("blue"), brick_size);
 
     //push brick to bricks vector and update current position for next brick's position
@@ -158,7 +167,7 @@ void DisplayScreen::UpdateForBrickCollision(Ball &ball, Brick &brick) {
     //check if the y position of the ball matches that of a brick
     if (brick.GetTopLeftPosition().y <= ball.GetPosition().y + ball.GetRadius()
     && brick.GetBottomRightPosition().y >= ball.GetPosition().y - ball.GetRadius()) {
-      //set velocity and num hits accordingly
+      //set was x collision to true
       was_x_collision = true;
     }
   }
@@ -170,20 +179,28 @@ void DisplayScreen::UpdateForBrickCollision(Ball &ball, Brick &brick) {
     //check if the x position of the ball matches that of a brick
     if (brick.GetTopLeftPosition().x <= ball.GetPosition().x + ball.GetRadius()
     && brick.GetBottomRightPosition().x >= ball.GetPosition().x - ball.GetRadius()) {
-      //set velocity and num hits accordingly
+      //set was y collision to true
       was_y_collision = true;
     }
   }
 
+  //if a collision has occurred, change state about the game
   if (was_x_collision && was_y_collision) {
+
+    //decrement number of hits on brick and set that there was a hit on the brick
     if (num_hits > 0) {
       num_hits--;
     }
+    is_brick_collision_ = true;
+
+    //set ball velocities
     x_velocity *= -1;
     y_velocity *= -1;
-    is_brick_collision_ = true;
+
+    //increment the score
     current_score_++;
   }
+
   //set the attributes of the ball and brick based on changes in if statements
   ball.SetVelocity(vec2{x_velocity, y_velocity});
   brick.SetNumHits(num_hits);
@@ -218,9 +235,11 @@ void DisplayScreen::UpdateForBallCollisionWithWall(Ball &ball) {
 }
 
 void DisplayScreen::UpdateForPaddleCollision(Ball &ball, Paddle &paddle) {
+  //set initial variables for calculations
   float x_velocity = ball.GetVelocity().x;
   float y_velocity = ball.GetVelocity().y;
 
+  //check if there is a possible collision with the top of the paddle
   if ((ball.GetPosition().y + ball.GetRadius() >= paddle.GetPaddleTopLeft().y) && y_velocity > 0) {
 
     //check if the x position of the ball matches that of a brick
@@ -232,21 +251,27 @@ void DisplayScreen::UpdateForPaddleCollision(Ball &ball, Paddle &paddle) {
     }
   }
 
+  //set velocity of the ball to the new velocity
   ball.SetVelocity(vec2{x_velocity, y_velocity});
 }
 
 void DisplayScreen::UpdateBrickPositions() {
-  size_t current_y_position = kMinBrickSize;
-
+  //loop through the rows of bricks backwards to start from the newest addition
   for (int row = brick_rows_.size() - 1; row >= 0; row--) {
+    //loop through each brick
     for (Brick &brick : brick_rows_[row]) {
-      size_t top_left_y_position = brick.GetTopLeftPosition().y + current_y_position;
-      size_t bottom_right_y_position = brick.GetBottomRightPosition().y + current_y_position;
+      //recalculate the y position to add the height of the brick to each y position of the brick
+      size_t top_left_y_position = brick.GetTopLeftPosition().y + kBrickHeight;
+      size_t bottom_right_y_position = brick.GetBottomRightPosition().y + kBrickHeight;
+
+      //set the new positions of the brick
       brick.SetTopLeftPosition(vec2{brick.GetTopLeftPosition().x, top_left_y_position});
       brick.SetBottomRightPosition(vec2{brick.GetBottomRightPosition().x, bottom_right_y_position});
     }
   }
-  AddBricksToDisplay(kMinBrickSize);
+
+  //add new bricks to the top row
+  AddBricksToDisplay(kBrickHeight);
 }
 
 size_t DisplayScreen::GetNumLives() const {
