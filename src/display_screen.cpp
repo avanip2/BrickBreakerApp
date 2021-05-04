@@ -17,9 +17,27 @@ DisplayScreen::DisplayScreen(vec2 set_display_top_left_position, vec2 set_displa
                vec2{0,0}, kBallSize,ci::Color("red"));
   paddle_ = Paddle(vec2{kPaddleLocation, display_bottom_right_position_.x - kPaddleSize},
                    vec2{kPaddleLocation + kPaddleLength, display_bottom_right_position_.x}, ci::Color("gray"));
+
+  //set state about the game cycle
   num_lives_ = 3;
   calls_to_advance_ = 0;
   current_score_ = 0;
+}
+
+void DisplayScreen::Reset() {
+  num_lives_ = 3;
+  calls_to_advance_ = 0;
+  current_score_ = 0;
+  brick_rows_.clear();
+
+  //add bricks, ball and paddle to the display by initializing them here
+  AddBricksToDisplay(kMinBrickSize);
+  ball_ = Ball(vec2{display_bottom_right_position_.x / 2, display_bottom_right_position_.y / 2},
+               vec2{0,0}, kBallSize,ci::Color("red"));
+  paddle_ = Paddle(vec2{kPaddleLocation, display_bottom_right_position_.x - kPaddleSize},
+                   vec2{kPaddleLocation + kPaddleLength, display_bottom_right_position_.x}, ci::Color("gray"));
+
+  has_game_ended_ = false;
 }
 
 void DisplayScreen::Display() const {
@@ -31,15 +49,26 @@ void DisplayScreen::Display() const {
       brick.DisplayBrick();
     }
   }
+
+  //create string labels to print on the screen for score and lives
   std::string score_label = "score: " + std::to_string(current_score_);
   std::string lives_label = "lives: " + std::to_string(num_lives_);
+
   //display the ball and paddle
   ball_.DisplayBall();
   paddle_.DisplayPaddle();
   ci::gl::color(ci::Color("White"));
   ci::gl::drawStrokedRect(ci::Rectf(display_top_left_position_, display_bottom_right_position_));
+
+  //draw the labels on the screen
   ci::gl::drawStringCentered(score_label, vec2{1050, 300});
   ci::gl::drawStringCentered(lives_label, vec2{1050, 400});
+
+  //print that the game has ended if it ends
+  if (has_game_ended_) {
+    std::string game_ended_label = "The game has ended. Press return to play again.";
+    ci::gl::drawStringCentered(game_ended_label, vec2{display_bottom_right_position_.x / 2, (display_bottom_right_position_.y / 2) + 100});
+  }
 }
 
 void DisplayScreen::AdvanceFrame() {

@@ -31,10 +31,19 @@ class BrickBreakerApp : public ci::app::App {
    */
   void keyDown(ci::app::KeyEvent event) override;
 
+  /**
+   * helper method to load the audio files into the app
+   */
   void LoadAudioFiles();
 
+  /**
+   * helper method that plays the brick's sound effect
+   */
   void PlayBrickSoundFX() const;
 
+  /**
+   * helper method that plays the paddle's sound effect
+   */
   void PlayPaddleSoundFX() const;
 
   const int kWindowSize = 1250;

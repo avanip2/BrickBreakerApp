@@ -49,6 +49,8 @@ class DisplayScreen {
    */
   void UpdateForPaddleCollision(Ball &ball, Paddle &paddle);
 
+  void Reset();
+
   Paddle paddle_;
 
   Ball ball_;
@@ -86,6 +88,9 @@ class DisplayScreen {
  */
   void AddBricksToDisplay(size_t y_position);
 
+  /**
+   * helper method that changes the height of the bricks when a new row is added
+   */
   void UpdateBrickPositions();
 
 };
