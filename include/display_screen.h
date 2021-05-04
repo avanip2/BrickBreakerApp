@@ -49,6 +49,9 @@ class DisplayScreen {
    */
   void UpdateForPaddleCollision(Ball &ball, Paddle &paddle);
 
+  /**
+   * helper method to reset state in the game to allow the player to easily play again
+   */
   void Reset();
 
   Paddle paddle_;

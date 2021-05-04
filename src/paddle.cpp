@@ -38,4 +38,5 @@ void Paddle::MovePaddle() {
   paddle_top_left_ = vec2{curr_paddle_top_left_x + change_in_x_, paddle_top_left_.y};
   paddle_bottom_right_ = vec2{curr_paddle_bottom_right_x + change_in_x_, paddle_bottom_right_.y};
 }
+
 } //namespace brickbreaker
