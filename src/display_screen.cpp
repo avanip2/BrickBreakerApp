@@ -19,6 +19,7 @@ DisplayScreen::DisplayScreen(vec2 set_display_top_left_position, vec2 set_displa
                    vec2{kPaddleLocation + kPaddleLength, display_bottom_right_position_.x}, ci::Color("gray"));
   num_lives_ = 3;
   calls_to_advance_ = 0;
+  current_score_ = 0;
 }
 
 void DisplayScreen::Display() const {
@@ -30,12 +31,15 @@ void DisplayScreen::Display() const {
       brick.DisplayBrick();
     }
   }
-
+  std::string score_label = "score: " + std::to_string(current_score_);
+  std::string lives_label = "lives: " + std::to_string(num_lives_);
   //display the ball and paddle
   ball_.DisplayBall();
   paddle_.DisplayPaddle();
   ci::gl::color(ci::Color("White"));
   ci::gl::drawStrokedRect(ci::Rectf(display_top_left_position_, display_bottom_right_position_));
+  ci::gl::drawStringCentered(score_label, vec2{1050, 300});
+  ci::gl::drawStringCentered(lives_label, vec2{1050, 400});
 }
 
 void DisplayScreen::AdvanceFrame() {
@@ -149,6 +153,7 @@ void DisplayScreen::UpdateForBrickCollision(Ball &ball, Brick &brick) {
     x_velocity *= -1;
     y_velocity *= -1;
     is_brick_collision_ = true;
+    current_score_++;
   }
   //set the attributes of the ball and brick based on changes in if statements
   ball.SetVelocity(vec2{x_velocity, y_velocity});

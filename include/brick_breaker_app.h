@@ -33,9 +33,9 @@ class BrickBreakerApp : public ci::app::App {
 
   void LoadAudioFiles();
 
-  void PlayBrickSoundFX();
+  void PlayBrickSoundFX() const;
 
-  void PlayPaddleSoundFX();
+  void PlayPaddleSoundFX() const;
 
   const int kWindowSize = 1250;
   const int kMargin = 100;

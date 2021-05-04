@@ -67,6 +67,7 @@ class DisplayScreen {
   size_t num_lives_;
   bool has_game_ended_;
   int calls_to_advance_;
+  size_t current_score_;
 
   //constants for drawing and randomizing objects in the display
   constexpr static size_t kNumberOfBricksPerRow = 9;

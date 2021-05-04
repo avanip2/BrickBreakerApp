@@ -8,7 +8,7 @@ namespace brickbreaker {
 BrickBreakerApp::BrickBreakerApp() :
     display_(vec2{0,0}, vec2{900,900}) {
   ci::app::setWindowSize(kWindowSize, kWindowSize);
-  //LoadAudioFiles();
+  LoadAudioFiles();
 }
 
 void BrickBreakerApp::draw() {
@@ -23,18 +23,34 @@ void BrickBreakerApp::draw() {
 
 void BrickBreakerApp::update() {
   display_.AdvanceFrame();
+  if (display_.is_paddle_collision_) {
+    PlayPaddleSoundFX();
+  }
+  if (display_.is_brick_collision_) {
+    PlayBrickSoundFX();
+  }
 }
 
 void BrickBreakerApp::keyDown(ci::app::KeyEvent event) {
   switch(event.getCode()) {
     case ci::app::KeyEvent::KEY_RIGHT: {
-      display_.paddle_.SetChangeInX(kPaddleChange);
-      display_.paddle_.MovePaddle();
+      if (display_.paddle_.GetPaddleBottomRight().x == 900) {
+        display_.paddle_.SetChangeInX(0);
+        display_.paddle_.MovePaddle();
+      } else {
+        display_.paddle_.SetChangeInX(kPaddleChange);
+        display_.paddle_.MovePaddle();
+      }
       break;
     }
     case ci::app::KeyEvent::KEY_LEFT: {
-      display_.paddle_.SetChangeInX(-kPaddleChange);
-      display_.paddle_.MovePaddle();
+      if (display_.paddle_.GetPaddleTopLeft().x == 0) {
+        display_.paddle_.SetChangeInX(0);
+        display_.paddle_.MovePaddle();
+      } else {
+        display_.paddle_.SetChangeInX(-kPaddleChange);
+        display_.paddle_.MovePaddle();
+      }
       break;
     }
     case ci::app::KeyEvent::KEY_SPACE: {
@@ -44,20 +60,26 @@ void BrickBreakerApp::keyDown(ci::app::KeyEvent event) {
 }
 
 void BrickBreakerApp::LoadAudioFiles() {
-  cinder::audio::SourceFileRef brick_collision_file;
-  brick_collision_file = cinder::audio::load(ci::app::loadAsset("Bonk 1.mp3"));
-  cinder::audio::SourceFileRef paddle_collision_file;
-  paddle_collision_file = cinder::audio::load(ci::app::loadAsset("Ploop.mp3"));
-  brick_collision_ = ci::audio::Voice::create(brick_collision_file);
-  paddle_collision_ = ci::audio::Voice::create(paddle_collision_file);
+  try {
+    cinder::audio::SourceFileRef brick_collision_file;
+    brick_collision_file = cinder::audio::load(ci::app::loadAsset(
+        R"(Bonk 1.mp3)"));
+    cinder::audio::SourceFileRef paddle_collision_file;
+    paddle_collision_file = cinder::audio::load(ci::app::loadAsset(
+        R"(Ploop.mp3)"));
+    brick_collision_ = ci::audio::Voice::create(brick_collision_file);
+    paddle_collision_ = ci::audio::Voice::create(paddle_collision_file);
+  } catch (std::exception& e) {
+    std::cout << e.what() << std::endl;
+  }
 }
 
-void BrickBreakerApp::PlayBrickSoundFX() {
+void BrickBreakerApp::PlayBrickSoundFX() const {
   brick_collision_ ->stop();
   brick_collision_ ->start();
 }
 
-void BrickBreakerApp::PlayPaddleSoundFX() {
+void BrickBreakerApp::PlayPaddleSoundFX() const {
   paddle_collision_ ->stop();
   paddle_collision_ ->start();
 }
