@@ -31,14 +31,6 @@ class Brick {
 
   vec2 GetBottomRightPosition();
 
-  void SetColor(ci::Color set_color);
-
-  ci::Color GetColor();
-
-  void SetBrickSize(size_t set_brick_size);
-
-  size_t GetBrickSize();
-
  private:
   //member variables/attributes of a brick
   size_t num_hits_;

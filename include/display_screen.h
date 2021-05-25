@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cinder/gl/gl.h"
+#include "cinder/audio/OutputNode.h"
 #include "brick.h"
 #include "ball.h"
 #include "paddle.h"
@@ -28,42 +29,74 @@ class DisplayScreen {
    */
   void AdvanceFrame();
 
+  /**
+ * determine if a collision with the entered brick and ball has occurred and update velocities and hits
+ * @param ball display ball
+ * @param brick specific brick in the row
+ */
+  void UpdateForBrickCollision(Ball &ball, Brick &brick);
+
+  /**
+   * determine if a collision between the ball and the wall has occurred
+   * @param ball display ball
+   */
+  void UpdateForBallCollisionWithWall(Ball &ball);
+
+  /**
+   * determine if a collision between the ball and the paddle has occurred
+   * @param ball the ball in the display
+   * @param paddle the paddle in the display
+   */
+  void UpdateForPaddleCollision(Ball &ball, Paddle &paddle);
+
+  /**
+   * helper method to reset state in the game to allow the player to easily play again
+   */
+  void Reset();
+
+  Paddle paddle_;
+
+  Ball ball_;
+
+  size_t GetNumLives() const;
+
+  bool is_brick_collision_;
+
+  bool is_paddle_collision_;
+
  private:
   //member variables of display
   vec2 display_top_left_position_;
   vec2 display_bottom_right_position_;
   std::vector<std::vector<Brick>> brick_rows_;
-  Ball ball_;
-  Paddle paddle_;
   size_t num_lives_;
+  bool has_game_ended_;
+  int calls_to_advance_;
+  int calls_to_adance_for_ball_;
+  size_t current_score_;
 
   //constants for drawing and randomizing objects in the display
-  constexpr static size_t kNumberOfBricksPerRow = 10;
+  constexpr static size_t kNumberOfBricksPerRow = 9;
   constexpr static size_t kMinNumberOfHits = 1;
   constexpr static size_t kMaxNumberOfHits = 10;
   constexpr static size_t kMinBrickSize = 50;
   constexpr static size_t kMaxBrickSize = 100;
   constexpr static size_t kBrickMargin = 2;
-  constexpr static int kBallXVelocity = -5;
-  constexpr static int kBallYVelocity = -6;
   constexpr static size_t kBallSize = 10;
   constexpr static size_t kPaddleLocation = 400;
   constexpr static size_t kPaddleSize = 20;
   constexpr static size_t kPaddleLength = 150;
+  constexpr static size_t kBrickHeight = 50;
 
   /**
-   * helper method to create and add bricks to the display
-   */
+ * helper method to create and add bricks to the display
+ */
   void AddBricksToDisplay(size_t y_position);
 
   /**
-   * helper method to remove bricks from the display(unimplemented)
-   * @param brick_to_remove brick to remove
+   * helper method that changes the height of the bricks when a new row is added
    */
-  void RemoveBrickFromDisplay(Brick &brick_to_remove);
+  void UpdateBrickPositions();
 
-  void UpdateForBrickCollision(Ball &ball, Brick &brick);
-
-  void UpdateForBallCollisionWithWall(Ball &ball);
 };
 } //namespace brickbreaker

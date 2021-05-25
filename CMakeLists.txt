@@ -56,7 +56,10 @@ list(APPEND SOURCE_FILES src/brick_breaker_app.cpp
                             src/util.cpp
                             src/paddle.cpp)
 
-list(APPEND TEST_FILES)
+list(APPEND TEST_FILES  tests/ball_test.cpp
+                        tests/brick_test.cpp
+                        tests/display_screen_test.cpp
+                        tests/paddle_test.cpp)
 
 ci_make_app(
         APP_NAME        brick-breaker

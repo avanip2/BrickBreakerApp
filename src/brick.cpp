@@ -27,14 +27,6 @@ void Brick::DisplayBrick() const {
   ci::gl::drawStringCentered(num_hits_label, vec2{top_left_position_.x + string_margin, bottom_right_position_.y - kStringYMargin});
 }
 
-void Brick::SetColor(ci::Color set_color) {
-  color_ = set_color;
-}
-
-ci::Color Brick::GetColor() {
-  return color_;
-}
-
 void Brick::SetBottomRightPosition(vec2 set_bottom_right_position) {
   bottom_right_position_ = set_bottom_right_position;
 }
@@ -59,11 +51,4 @@ size_t Brick::GetNumHits() {
   return num_hits_;
 }
 
-void Brick::SetBrickSize(size_t set_brick_size) {
-  brick_size_ = set_brick_size;
-}
-
-size_t Brick::GetBrickSize() {
-  return brick_size_;
-}
 } //namespace brickbreaker

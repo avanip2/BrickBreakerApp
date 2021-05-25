@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+#include "brick.h"
 namespace brickbreaker {
 
 /**
@@ -9,4 +11,11 @@ namespace brickbreaker {
  * @return the random number
  */
 size_t GenerateRandomNumber(size_t min, size_t max);
+
+/**
+ * helper method to delete one element from a 2d vector of bricks
+ * @param bricks 1d vector of bricks
+ * @param col location of the brick to remove
+ */
+void DeleteElementFrom2DVector(std::vector<Brick>& bricks, size_t col);
 } //namespace brickbreaker

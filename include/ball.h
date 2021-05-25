@@ -30,13 +30,7 @@ class Ball {
 
   vec2 GetVelocity();
 
-  void SetRadius(float set_radius);
-
   float GetRadius();
-
-  void SetColor(ci::Color set_color);
-
-  ci::Color GetColor();
 
  private:
   //member variables of the ball class
