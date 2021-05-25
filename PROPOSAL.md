@@ -15,7 +15,7 @@ container, the player has lost the game and the game is over.
 
 During the first week of the project, I will work to create the brick class in which I will store each brick's
 position, number of hits required to destroy it, and any other property I think is necessary to store as part of
-the class for the brick. I will work on drawing each of the bricks and randomizing their x-position, since they
+the class for the brick. I will work on drawing each of the bricks and randomizing their size, since they
 will all be in the same row and will have the same y-position with every set of bricks added to the screen in one
 call of the draw method. I plan to store all the bricks in a vector and every time the screen updates, I will loop 
 through the vector and check if any of the bricks have reached the bottom of the container. During the second week 

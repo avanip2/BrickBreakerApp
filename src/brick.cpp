@@ -14,9 +14,14 @@ Brick::Brick(size_t set_num_hits, vec2 set_top_left_position, vec2 set_bottom_ri
 }
 
 void Brick::DisplayBrick() const {
+  //create a margin to draw the string label on the brick
   size_t string_margin = brick_size_ / 2;
+
+  //draw brick
   ci::gl::color(color_);
   ci::gl::drawSolidRect(ci::Rectf(top_left_position_, bottom_right_position_));
+
+  //draw label on brick
   std::string num_hits_label = std::to_string(num_hits_);
   ci::gl::color(ci::Color("white"));
   ci::gl::drawStringCentered(num_hits_label, vec2{top_left_position_.x + string_margin, bottom_right_position_.y - kStringYMargin});
